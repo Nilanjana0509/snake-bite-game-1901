@@ -32,7 +32,7 @@ import FinalResult12 from "./Levels/Result12";
 import FinalResult13 from "./Levels/Result13";
 
 function App() {
-  // Initialize completedLevels from local storage
+  // Initialize completedLevels fr
   const [completedLevels, setCompletedLevels] = useState(() => {
     const savedLevels = localStorage.getItem("completedLevels");
     return savedLevels
