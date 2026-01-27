@@ -1,4 +1,4 @@
-const LoginModal = ({ onBack }) => {
+const SignupModal = ({ onBack }) => {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
@@ -9,11 +9,11 @@ const LoginModal = ({ onBack }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-xl font-semibold text-gray-900">
-          Login
+          Sign Up
         </h2>
 
         <p className="mt-2 text-sm text-gray-600">
-          Welcome back! Please login to continue.
+          Create an account to get started.
         </p>
 
         <div className="mt-6 space-y-3">
@@ -33,7 +33,7 @@ const LoginModal = ({ onBack }) => {
         <button
           className="mt-6 w-full rounded-lg bg-blue-600 py-2.5 text-sm font-medium text-white transition hover:bg-blue-700"
         >
-          Login
+          Sign Up
         </button>
 
         <button
@@ -47,4 +47,4 @@ const LoginModal = ({ onBack }) => {
   );
 };
 
-export default LoginModal;
+export default SignupModal;

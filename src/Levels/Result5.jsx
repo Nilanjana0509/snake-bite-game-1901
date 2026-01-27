@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ModalController from "../components/modals/ModalController";
 
 const FinalResult5 = () => {
   const [showStarPopup, setShowStarPopup] = useState(true);
   const [showWarningPopup, setShowWarningPopup] = useState(false);
   const [showCompletionPopup, setShowCompletionPopup] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
 
   const [allResults, setAllResults] = useState({});
   const navigate = useNavigate();
@@ -43,9 +46,11 @@ const FinalResult5 = () => {
   }, []);
 
   const handleHomeClick = () => {
-    const completedPaths = getCompletedPathsCount();
+   const completedPaths = getCompletedPathsCount();
     if (completedPaths === 8) {
       setShowCompletionPopup(true);
+    } else if(completedPaths === 1){
+      setShowModal(true);
     } else {
       const pathData = localStorage.getItem("path");
       localStorage.clear();
@@ -212,6 +217,9 @@ const FinalResult5 = () => {
             </div>
           </div>
         </div>
+      )}
+      {showModal && (
+        <ModalController onClose={() => setShowModal(false)} />
       )}
     </>
   );
