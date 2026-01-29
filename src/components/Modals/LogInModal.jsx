@@ -31,14 +31,11 @@ const LoginModal = ({ onBack }) => {
     };
 
     try {
-      const response = await fetch(
-        "http://localhost:3030/api/users/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
+      const response = await fetch("http://localhost:3030/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
       const data = await response.json();
 
@@ -65,15 +62,12 @@ const LoginModal = ({ onBack }) => {
         className="w-[360px] rounded-2xl bg-white p-6 shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-xl font-semibold text-amber-950">
-          Log In
-        </h2>
+        <h2 className="text-xl font-semibold text-amber-950">Log In</h2>
 
         <p className="mt-2 text-amber-900">
           Welcome back! Please login to continue.
         </p>
 
-        
         <div className="mt-6">
           <input
             type="email"
@@ -91,13 +85,10 @@ const LoginModal = ({ onBack }) => {
               }`}
           />
           {errors.email && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.email}
-            </p>
+            <p className="mt-1 text-sm text-red-600">{errors.email}</p>
           )}
         </div>
 
-        
         <div className="mt-4">
           <input
             type="password"
@@ -115,13 +106,10 @@ const LoginModal = ({ onBack }) => {
               }`}
           />
           {errors.password && (
-            <p className="mt-1 text-sm text-red-600">
-              {errors.password}
-            </p>
+            <p className="mt-1 text-sm text-red-600">{errors.password}</p>
           )}
         </div>
 
-        
         <button
           onClick={handleLogin}
           disabled={loading}
@@ -130,7 +118,6 @@ const LoginModal = ({ onBack }) => {
           {loading ? "Logging in..." : "Log In"}
         </button>
 
-        
         <button
           onClick={onBack}
           className="mt-3 w-full rounded-lg bg-gray-100 py-2 font-medium text-gray-700 hover:bg-gray-200"

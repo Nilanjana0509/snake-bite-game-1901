@@ -1,7 +1,7 @@
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
-const SignupModal = ({ onBack }) => {
+const SignupModal = ({ onBack, onSuccess }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -46,22 +46,17 @@ const SignupModal = ({ onBack }) => {
     };
 
     try {
-      const response = await fetch(
-        "http://localhost:3030/api/users/register",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
+      const response = await fetch("http://localhost:3030/api/users/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.message || "Signup failed");
       }
-
-      toast.success("Sign Up Successful! 🎉");
 
       setFormData({
         name: "",
@@ -73,6 +68,7 @@ const SignupModal = ({ onBack }) => {
         institution: "",
       });
       setErrors({});
+      onSuccess(data.message);
     } catch (err) {
       toast.error(err.message || "Signup failed");
     }
