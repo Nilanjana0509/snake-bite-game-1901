@@ -1,6 +1,6 @@
 import React from "react";
 
-function SuccessModal({ onLogin, sucessMessage }) {
+function SuccessModal({ onLogin }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
       <div
@@ -8,7 +8,7 @@ function SuccessModal({ onLogin, sucessMessage }) {
         onClick={(e) => e.stopPropagation()}
       >
         <h2 className="text-xl font-semibold text-amber-950">
-          {sucessMessage}
+          {/* {sucessMessage} */}
           Sign Up Successful! 🎉
         </h2>
 
