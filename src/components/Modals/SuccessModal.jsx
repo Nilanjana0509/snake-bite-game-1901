@@ -9,27 +9,28 @@ function SuccessModal({ onLogin, sucessMessage }) {
       >
         <h2 className="text-xl font-semibold text-amber-950">
           {sucessMessage}
+          Sign Up Successful! 🎉
         </h2>
 
         <p className="mt-2 text-amber-900">
           To play ahead, you have to subscribe to the software.
         </p>
 
-        {/* <div className="mt-6 flex gap-3">
+        <div className="mt-6 flex gap-3">
           <button
-            onClick={onSubscribe}
+            onClick={onLogin}
             className="flex-1 rounded-lg bg-amber-900 py-2.5 text-white transition hover:bg-amber-950"
           >
-            Subscribe
+            Log In
           </button>
 
-          <button
+          {/* <button
             onClick={onExit}
             className="flex-1 rounded-lg bg-gray-300 py-2.5  text-gray-700 transition hover:bg-gray-400"
           >
             Exit
-          </button>
-        </div> */}
+          </button> */}
+        </div>
       </div>
     </div>
   );

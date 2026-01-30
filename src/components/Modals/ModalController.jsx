@@ -34,14 +34,14 @@ function ModalController({ onClose }) {
         <SignupModal
           onBack={() => setActiveModal("AUTH")}
           onSuccess={() => setActiveModal("SUCCESS")}
-          setSuccessMessage={setSuccessMessage}
+          // setSuccessMessage={setSuccessMessage}
         />
       )}
 
       {activeModal === "SUCCESS" && (
         <SuccessModal
           onLogin={() => setActiveModal("LOGIN")}
-          successMessage={successMessage}
+          // successMessage={successMessage}
         />
       )}
     </>
