@@ -13,7 +13,7 @@ function SuccessModal({ onLogin }) {
         </h2>
 
         <p className="mt-2 text-amber-900">
-          To play ahead, you have to subscribe to the software.
+          Now you can log in using your credentials to buy the software.
         </p>
 
         <div className="mt-6 flex gap-3">

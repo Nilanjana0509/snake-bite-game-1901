@@ -9,10 +9,13 @@ const LoginModal = ({ onBack }) => {
 
   const handleLogin = async () => {
     const newErrors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!email.trim()) {
       newErrors.email = "Email is required";
-    }
+    } else if (!emailRegex.test(email)) {
+    newErrors.email = "Please enter a valid email address";
+  }
 
     if (!password.trim()) {
       newErrors.password = "Password is required";
