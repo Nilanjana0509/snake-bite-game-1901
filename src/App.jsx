@@ -27,9 +27,11 @@ import Level18 from "./Levels/Level18";
 import FinalResult16 from "./Levels/Result16";
 import FinalResult5 from "./Levels/Result5";
 import FinalResult14 from "./Levels/Result14";
-import FinalResult15 from "./Levels/Result15";  
+import FinalResult15 from "./Levels/Result15";
 import FinalResult12 from "./Levels/Result12";
 import FinalResult13 from "./Levels/Result13";
+
+import FinalResult1 from "./Results/Result1";
 
 function App() {
   // Initialize completedLevels fr
@@ -48,13 +50,11 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Route for Level 1 */}
-        <Route
+        {/* <Route
           path="/level1"
           element={<Level1 setCompletedLevels={setCompletedLevels} />}
         />
 
-        {/* Protected Route for Level 2 */}
         <Route
           path="/level2"
           element={
@@ -78,28 +78,28 @@ function App() {
             </ProtectedRoute>
           }
         />
-<Route
-  path="/level4"
-  element={
-    <ProtectedRoute
-      completed={completedLevels.level3}
-      redirectTo="/level3"
-    >
-      <Level4 setCompletedLevels={setCompletedLevels} />
-    </ProtectedRoute>
-  }
-/>
-<Route
-  path="/level5"
-  element={
-    <ProtectedRoute
-      completed={completedLevels.level2} // ✅ Only requires Level 2
-      redirectTo="/level2"
-    >
-      <Level5 setCompletedLevels={setCompletedLevels} />
-    </ProtectedRoute>
-  }
-/>
+        <Route
+          path="/level4"
+          element={
+            <ProtectedRoute
+              completed={completedLevels.level3}
+              redirectTo="/level3"
+            >
+              <Level4 setCompletedLevels={setCompletedLevels} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/level5"
+          element={
+            <ProtectedRoute
+              completed={completedLevels.level2} // ✅ Only requires Level 2
+              redirectTo="/level2"
+            >
+              <Level5 setCompletedLevels={setCompletedLevels} />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/level6"
@@ -112,17 +112,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* <Route
-          path="/level6"
-          element={
-            <ProtectedRoute
-              completed={completedLevels.level5}
-              redirectTo="/level5"
-            >
-              <Level6 setCompletedLevels={setCompletedLevels} />
-            </ProtectedRoute>
-          }
-        /> */}
+       
         <Route
           path="/level11"
           element={
@@ -156,17 +146,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* <Route
-          path="/level11"
-          element={
-            <ProtectedRoute
-              completed={completedLevels.level8}
-              redirectTo="/level8"
-            >
-              <Level11 setCompletedLevels={setCompletedLevels} />
-            </ProtectedRoute>
-          }
-        /> */}
+        
         <Route
           path="/level9"
           element={
@@ -287,39 +267,41 @@ function App() {
               <Level9 setCompletedLevels={setCompletedLevels} />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/level16"
-          element={
-            <ProtectedRoute
-              completed={completedLevels.level14}
-              redirectTo="/level14"
-            >
-              <Level16 setCompletedLevels={setCompletedLevels} />
-            </ProtectedRoute>
-          }
-        />
+        /> */}
 
-        {/* Fallback route to Level 1 */}
-        <Route path="*" element={<Navigate to="/level1" />} />
-          
-          {/* Route for the final result */}
-          <Route path="/result16" element={<FinalResult16 />} />
-          <Route path="/result5" element={<FinalResult5 />} />
-          <Route path="/result14" element={<FinalResult14 />} />
-          <Route path="/result15" element={<FinalResult15 />} />
-          <Route path="/result12" element={<FinalResult12 />} />
-          <Route path="/result13" element={<FinalResult13 />} />
+        <Route path="*" element={<Level1 />} />
+        <Route path="/level2" element={<Level2 />} />
+        <Route path="/level3" element={<Level3 />} />
+        <Route path="/level4" element={<Level4 />} />
+        <Route path="/level5" element={<Level5 />} />
+        <Route path="/level6" element={<Level6 />} />
+        <Route path="/level7" element={<Level7 />} />
+        <Route path="/level8" element={<Level8 />} />
+        <Route path="/level9" element={<Level9 />} />
+        <Route path="/level10" element={<Level10 />} />
+        <Route path="/level11" element={<Level11 />} />
+        <Route path="/level12" element={<Level12 />} />
+        <Route path="/level13" element={<Level13 />} />
+        <Route path="/level14" element={<Level14 />} />
+        <Route path="/level15" element={<Level15 />} />
+        <Route path="/level16" element={<Level16 />} />
+        <Route path="/level17" element={<Level17 />} />
+        <Route path="/level18" element={<Level18 />} />
 
+        {/* Route for the final result */}
+        <Route path="/result1" element={<FinalResult1 />} />
+        <Route path="/result16" element={<FinalResult16 />} />
+        <Route path="/result5" element={<FinalResult5 />} />
+        <Route path="/result14" element={<FinalResult14 />} />
+        <Route path="/result15" element={<FinalResult15 />} />
+        <Route path="/result12" element={<FinalResult12 />} />
+        <Route path="/result13" element={<FinalResult13 />} />
       </Routes>
     </Router>
   );
 }
 
-export default App;
-
-
- /* <Route
+export default App; /* <Route
   path="/level5"
   element={
     <ProtectedRoute
@@ -331,4 +313,4 @@ export default App;
   }
 />
  
-LEVEL 5 was PROTECTED!*/ 
+LEVEL 5 was PROTECTED!*/

@@ -3,6 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaQuestionCircle, FaStar } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
 import companyImage from "/whatsapp.jpg";
+import {
+  clearGameStorage,
+  initGameStorage,
+  storeLevelResult,
+} from "../utils/gameStorage";
 
 const Level1 = ({ setCompletedLevels }) => {
   const location = useLocation();
@@ -15,11 +20,10 @@ const Level1 = ({ setCompletedLevels }) => {
   const [selectedCards4, setSelectedCards4] = useState({});
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showWrongPopup, setShowWrongPopup] = useState(false);
-  const [result, SetResult] = useState([]);
-  const [sc, setsc] = useState(0);
   const [showImage, setShowImage] = useState(true);
   const [showRules, setShowRules] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [finalResult, setFinalResult] = useState();
   const [starCount, setStarCount] = useState(0);
 
   useEffect(() => {
@@ -33,9 +37,13 @@ const Level1 = ({ setCompletedLevels }) => {
   }, []);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("path")) || {};
-    const trueCount = Object.values(data).filter(value => value === true).length;
-    setStarCount(0);
+    // const data = JSON.parse(localStorage.getItem("path")) || {};
+    // const trueCount = Object.values(data).filter(
+    //   (value) => value === true,
+    // ).length;
+    // setStarCount(0);
+    clearGameStorage();
+    initGameStorage();
   }, []);
 
   useEffect(() => {
@@ -44,19 +52,20 @@ const Level1 = ({ setCompletedLevels }) => {
   }, []);
 
   const handleCompleteLevel1 = () => {
-    const completedLevels = { level1: true };
-    localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
-    setCompletedLevels(completedLevels);
+    // const completedLevels = { level1: true };
+    // localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
+    // setCompletedLevels(completedLevels);
+    storeLevelResult("1", finalResult);
     navigate("/level2");
   };
 
-  useEffect(() => {
-    localStorage.setItem("currentLevel", location.pathname);
-    const savedLevel = localStorage.getItem("currentLevel");
-    if (savedLevel && savedLevel !== location.pathname) {
-      navigate(savedLevel);
-    }
-  }, [location, navigate]);
+  // useEffect(() => {
+  //   localStorage.setItem("currentLevel", location.pathname);
+  //   const savedLevel = localStorage.getItem("currentLevel");
+  //   if (savedLevel && savedLevel !== location.pathname) {
+  //     navigate(savedLevel);
+  //   }
+  // }, [location, navigate]);
 
   const initialDeck = [
     { id: 1, text: "Reassure" },
@@ -65,7 +74,10 @@ const Level1 = ({ setCompletedLevels }) => {
     { id: 4, text: "Apply suction at wound site" },
     { id: 5, text: "Apply turmeric/antiseptic ointment to local wound" },
     { id: 6, text: "Make an incision at the bite site" },
-    { id: 7, text: "Consult traditional healers, because they are locally accessible" },
+    {
+      id: 7,
+      text: "Consult traditional healers, because they are locally accessible",
+    },
     { id: 8, text: "Go to nearest Govt. hospital" },
     { id: 9, text: "Tell the doctor of any emergent sign" },
     { id: 10, text: "Try to capture the snake or take a picture of the snake" },
@@ -90,16 +102,6 @@ const Level1 = ({ setCompletedLevels }) => {
     }
   };
 
-  const showNextCard = () => {
-    if (deckIndex === null) {
-      setDeckIndex(0);
-    } else if (deckIndex < deck.length - 1) {
-      setDeckIndex(deckIndex + 1);
-    } else {
-      setDeckIndex(0);
-    }
-  };
-
   const shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -108,59 +110,21 @@ const Level1 = ({ setCompletedLevels }) => {
     return array;
   };
 
-  const getText1 = () => {
-    if (!deck.length) {
-      alert("Please select the card from the deck");
-    } else {
-      SetResult((prevResult) => [...prevResult, deck[0]]);
-      setSelectedCards1(deck[0]);
-      setDeck(deck.slice(1));
-    }
-  };
-
-  const getText2 = () => {
-    if (!deck.length) {
-      alert("Please select the card from the deck");
-    } else {
-      setSelectedCards2(deck[0]);
-      SetResult((prevResult) => [...prevResult, deck[0]]);
-      setDeck(deck.slice(1));
-    }
-  };
-
-  const getText3 = () => {
-    if (!deck.length) {
-      alert("Please select the card from the deck");
-    } else {
-      setSelectedCards3(deck[0]);
-      SetResult((prevResult) => [...prevResult, deck[0]]);
-      setDeck(deck.slice(1));
-    }
-  };
-
-  const getText4 = () => {
-    if (!deck.length) {
-      alert("Please select the card from the deck");
-    } else {
-      setSelectedCards4(deck[0]);
-      SetResult((prevResult) => [...prevResult, deck[0]]);
-      setDeck([]);
-    }
-  };
-
   const res = () => {
     const selectedCards = [
       selectedCards1.text,
       selectedCards2.text,
       selectedCards3.text,
       selectedCards4.text,
-    ].filter(text => text);
-    const correctCards = correctSequence.map(card => card.text);
-    const isCorrect = selectedCards.length === correctCards.length && selectedCards.every(card => correctCards.includes(card));
+    ].filter((text) => text);
+    const correctCards = correctSequence.map((card) => card.text);
+    const isCorrect =
+      selectedCards.length === correctCards.length &&
+      selectedCards.every((card) => correctCards.includes(card));
     if (isCorrect) {
-      console.log("correct");
       setShowSuccessPopup(true);
-      localStorage.setItem("level1Result", JSON.stringify(selectedCards));
+      setFinalResult(JSON.stringify(selectedCards));
+      // localStorage.setItem("level1Result", JSON.stringify(selectedCards));
     } else {
       console.log("incorrect");
       setShowWrongPopup(true);
@@ -205,8 +169,11 @@ const Level1 = ({ setCompletedLevels }) => {
 
   return (
     <div
-className={`relative w-full ${gameStarted ? "h-screen" : "h-full"} overflow-auto`}
-      style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover" }}
+      className={`relative w-full ${gameStarted ? "h-screen" : "h-full"} overflow-auto`}
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+      }}
     >
       {showImage && (
         <img
@@ -228,23 +195,31 @@ className={`relative w-full ${gameStarted ? "h-screen" : "h-full"} overflow-auto
       {showRules && !gameStarted && (
         <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50 p-4">
           <div className="bg-gray-100 p-6 rounded-lg shadow-lg text-center border-4 border-gray-300 overflow-y-auto max-h-[70vh]">
-            <h2 className="text-3xl font-bold mb-4">Rules of the Snake Bite Game</h2>
+            <h2 className="text-3xl font-bold mb-4">
+              Rules of the Snake Bite Game
+            </h2>
             <p className="mb-2 text-lg">
               A patient of snake bite needs your urgent help.
             </p>
             <p className="mb-2 text-lg">
-              As the game progresses, you will come across different situations which you need to handle correctly by selecting appropriate ones from given options.
+              As the game progresses, you will come across different situations
+              which you need to handle correctly by selecting appropriate ones
+              from given options.
             </p>
             <p className="mb-2 text-lg">
-              There are possibilities like no envenomations, haemotoxic envenomation or neurotoxic envenomation.
+              There are possibilities like no envenomations, haemotoxic
+              envenomation or neurotoxic envenomation.
             </p>
             <p className="mb-2 text-lg">
-              In case of them, these are different clinical scenarios leading to different management paths.
+              In case of them, these are different clinical scenarios leading to
+              different management paths.
             </p>
             <p className="mb-4 text-lg">
               By completing each path successfully, you will get a star.
             </p>
-            <p className="mb-4 text-lg">Collect 7 stars to complete the game.</p>
+            <p className="mb-4 text-lg">
+              Collect 7 stars to complete the game.
+            </p>
             <button
               className="mt-4 bg-amber-950 text-white px-4 py-2 rounded-md"
               onClick={startGame}
@@ -256,19 +231,27 @@ className={`relative w-full ${gameStarted ? "h-screen" : "h-full"} overflow-auto
       )}
       {gameStarted && (
         <div className="p-4 sm:p-6 flex flex-col items-center relative w-full h-full overflow-auto">
-          <div className="absolute top-10 left-4 flex items-center gap-4"> {/* Adjusted top from 4 to 10 */}
+          <div className="absolute top-10 left-4 flex items-center gap-4">
+            {" "}
+            {/* Adjusted top from 4 to 10 */}
             <div className="flex items-center gap-2">
               <FaStar className="text-yellow-500 text-xl sm:text-2xl" />
-              <span className="text-slate-50 text-sm sm:text-base">{starCount}</span>
+              <span className="text-slate-50 text-sm sm:text-base">
+                {starCount}
+              </span>
             </div>
           </div>
-          <div className="absolute top-10 right-4 flex items-center gap-4"> {/* Adjusted top from 4 to 10 */}
+          <div className="absolute top-10 right-4 flex items-center gap-4">
+            {" "}
+            {/* Adjusted top from 4 to 10 */}
             <div className="flex items-center gap-2 cursor-pointer">
               <FaQuestionCircle className="text-slate-50 text-xl sm:text-2xl" />
             </div>
           </div>
 
-          <h2 className="text-2xl font-bold text-slate-50 mx-auto mt-10"> {/* Added mt-10 to push header down */}
+          <h2 className="text-2xl font-bold text-slate-50 mx-auto mt-10">
+            {" "}
+            {/* Added mt-10 to push header down */}
             You have come across a patient of Snake bite. Now choose appropriate
             actions
           </h2>
@@ -284,10 +267,10 @@ className={`relative w-full ${gameStarted ? "h-screen" : "h-full"} overflow-auto
                     !selectedCards1.text
                       ? setSelectedCards1
                       : !selectedCards2.text
-                      ? setSelectedCards2
-                      : !selectedCards3.text
-                      ? setSelectedCards3
-                      : setSelectedCards4
+                        ? setSelectedCards2
+                        : !selectedCards3.text
+                          ? setSelectedCards3
+                          : setSelectedCards4,
                   )
                 }
               >
@@ -304,27 +287,30 @@ className={`relative w-full ${gameStarted ? "h-screen" : "h-full"} overflow-auto
             </div>
 
             <div className="flex flex-wrap justify-center gap-8 mt-10">
-              {[selectedCards1, selectedCards2, selectedCards3, selectedCards4].map(
-                (card, idx) => (
-                  <div
-                    key={idx}
-                    className="border-2 border-blue-400 w-40 h-32 flex items-center justify-center bg-gray-100 rounded-lg shadow-md text-gray-700 transition-transform transform hover:scale-105 cursor-pointer"
-                    onClick={() =>
-                      handleBoxClick(
-                        card,
-                        [
-                          setSelectedCards1,
-                          setSelectedCards2,
-                          setSelectedCards3,
-                          setSelectedCards4,
-                        ][idx]
-                      )
-                    }
-                  >
-                    <p className="text-sm text-center">{card.text || ""}</p>
-                  </div>
-                )
-              )}
+              {[
+                selectedCards1,
+                selectedCards2,
+                selectedCards3,
+                selectedCards4,
+              ].map((card, idx) => (
+                <div
+                  key={idx}
+                  className="border-2 border-blue-400 w-40 h-32 flex items-center justify-center bg-gray-100 rounded-lg shadow-md text-gray-700 transition-transform transform hover:scale-105 cursor-pointer"
+                  onClick={() =>
+                    handleBoxClick(
+                      card,
+                      [
+                        setSelectedCards1,
+                        setSelectedCards2,
+                        setSelectedCards3,
+                        setSelectedCards4,
+                      ][idx],
+                    )
+                  }
+                >
+                  <p className="text-sm text-center">{card.text || ""}</p>
+                </div>
+              ))}
             </div>
           </div>
 

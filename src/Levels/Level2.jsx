@@ -2,6 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import backgroundImage from "../assets/images/snake11.png";
 import { FaQuestionCircle, FaStar } from "react-icons/fa";
+import {
+  clearGameStorage,
+  initGameStorage,
+  storeLevelResult,
+  storeCurrentLevel,
+  getSpecificData,
+} from "../utils/gameStorage";
 
 const Level2 = ({ setCompletedLevels }) => {
   const navigate = useNavigate();
@@ -18,6 +25,7 @@ const Level2 = ({ setCompletedLevels }) => {
   const [showWrongPopup, setShowWrongPopup] = useState(false);
   const [showFinalSuccessPopup, setShowFinalSuccessPopup] = useState(false);
   const [starCount, setStarCount] = useState(0);
+  const [finalResult, setFinalResult] = useState();
 
   const initialDeck = [
     { id: 1, text: "Secure Respiration and Airway" },
@@ -30,7 +38,10 @@ const Level2 = ({ setCompletedLevels }) => {
     { id: 8, text: "Start Antibiotics immediately" },
     { id: 9, text: "Sedate with Diazepam" },
     { id: 10, text: "10 WBCT" },
-    { id: 11, text: "20 WBCT\n(may be omitted in case of obvious signs of hemorrhage)" },
+    {
+      id: 11,
+      text: "20 WBCT\n(may be omitted in case of obvious signs of hemorrhage)",
+    },
     { id: 12, text: "PT, INR" },
   ];
 
@@ -39,7 +50,10 @@ const Level2 = ({ setCompletedLevels }) => {
     { id: 2, text: "Admit the patient" },
     { id: 3, text: "Start IVF with NS/5D" },
     { id: 4, text: "Inj. Tetanus Toxoid" },
-    { id: 11, text: "20 WBCT\n(may be omitted in case of obvious signs of hemorrhage)" },
+    {
+      id: 11,
+      text: "20 WBCT\n(may be omitted in case of obvious signs of hemorrhage)",
+    },
   ];
 
   const shuffleDeck = (deck) => {
@@ -71,12 +85,14 @@ const Level2 = ({ setCompletedLevels }) => {
   }, [location, navigate]);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("path")) || {};
-    const trueCount = Object.values(data).filter(value => value === true).length;
-    setStarCount(trueCount);
-    if(trueCount == 7){
-      setShowFinalSuccessPopup(true);
-    }
+    // const data = JSON.parse(localStorage.getItem("path")) || {};
+    // const trueCount = Object.values(data).filter(value => value === true).length;
+    // setStarCount(trueCount);
+    // if(trueCount == 7){
+    //   setShowFinalSuccessPopup(true);
+    // }
+    setStarCount(getSpecificData("totalCompleted"));
+    storeCurrentLevel("2");
   }, []);
 
   const selectCard = (card, boxSetter) => {
@@ -124,11 +140,12 @@ const Level2 = ({ setCompletedLevels }) => {
     ];
     const correctCards = correctSequence.map((card) => card.text);
     const isCorrect = selectedCards.every((selectedCard) =>
-      correctCards.includes(selectedCard)
+      correctCards.includes(selectedCard),
     );
     if (isCorrect) {
       setShowSuccessPopup(true);
-      localStorage.setItem("level2Result", JSON.stringify(selectedCards));
+      setFinalResult(JSON.stringify(selectedCards));
+      // localStorage.setItem("level2Result", JSON.stringify(selectedCards));
     } else {
       setShowWrongPopup(true);
     }
@@ -157,32 +174,34 @@ const Level2 = ({ setCompletedLevels }) => {
   };
 
   const handleCompleteLevel2 = (path) => {
-    const completedLevels = {
-      level1: true,
-      level2: true,
-      level3: path === "/level3",
-      level4: false,
-      level5: path === "/level5",
-    };
-    localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
-    setCompletedLevels(completedLevels);
-    console.log("Navigating to:", path);
-    navigate(path, { state: { prev: location.state?.prev + '-2' || "1-2" } });
+    storeLevelResult("2", finalResult);
+    navigate(path);
+    // const completedLevels = {
+    //   level1: true,
+    //   level2: true,
+    //   level3: path === "/level3",
+    //   level4: false,
+    //   level5: path === "/level5",
+    // };
+    // // localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
+    // setCompletedLevels(completedLevels);
+    // console.log("Navigating to:", path);
+    // navigate(path, { state: { prev: location.state?.prev + "-2" || "1-2" } });
   };
   const confirmExit = () => {
-    localStorage.clear();
-    const resetData = {
-      "1-2-3-5": false,
-      "1-2-3-4-6-11-15": false,
-      "1-2-3-4-6-11-12": false,
-      "1-2-3-4-6-12": false,
-      "1-2-3-4-6-7-9-13": false,// add new level after 9
-      "1-2-3-4-6-7-10-13": false,// add new level after 10 //improvement
-      "1-2-3-4-6-7-10-14": false
-      // "1-2-3-4-6-7-10-14-13": false,
-      // "1-2-3-4-6-7-10-14-16": false
-    };
-    localStorage.setItem("path", JSON.stringify(resetData));
+    // localStorage.clear();
+    // const resetData = {
+    //   "1-2-3-5": false,
+    //   "1-2-3-4-6-11-15": false,
+    //   "1-2-3-4-6-11-12": false,
+    //   "1-2-3-4-6-12": false,
+    //   "1-2-3-4-6-7-9-13": false, // add new level after 9
+    //   "1-2-3-4-6-7-10-13": false, // add new level after 10 //improvement
+    //   "1-2-3-4-6-7-10-14": false,
+    //   // "1-2-3-4-6-7-10-14-13": false,
+    //   // "1-2-3-4-6-7-10-14-16": false
+    // };
+    // localStorage.setItem("path", JSON.stringify(resetData));
     window.location.href = window.location.origin;
   };
 
@@ -193,12 +212,17 @@ const Level2 = ({ setCompletedLevels }) => {
   return (
     <div
       className="p-4 sm:p-6 flex flex-col items-center relative w-full h-full overflow-auto"
-      style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover" }}
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+      }}
     >
       <div className="absolute top-10 left-4 flex items-center gap-4">
         <div className="flex items-center gap-2">
           <FaStar className="text-yellow-500 text-xl sm:text-2xl" />
-          <span className="text-slate-50 text-sm sm:text-base">{starCount}</span>
+          <span className="text-slate-50 text-sm sm:text-base">
+            {starCount}
+          </span>
         </div>
       </div>
       <div className="absolute top-10 right-4 flex items-center gap-4">
@@ -221,12 +245,12 @@ const Level2 = ({ setCompletedLevels }) => {
                 !selectedCards1.text
                   ? setSelectedCards1
                   : !selectedCards2.text
-                  ? setSelectedCards2
-                  : !selectedCards3.text
-                  ? setSelectedCards3
-                  : !selectedCards4.text
-                  ? setSelectedCards4
-                  : setSelectedCards5
+                    ? setSelectedCards2
+                    : !selectedCards3.text
+                      ? setSelectedCards3
+                      : !selectedCards4.text
+                        ? setSelectedCards4
+                        : setSelectedCards5,
               )
             }
           >
@@ -242,37 +266,63 @@ const Level2 = ({ setCompletedLevels }) => {
       </div>
 
       <div className="flex flex-wrap justify-center gap-8 mt-4">
-        {[selectedCards1, selectedCards2, selectedCards3, selectedCards4, selectedCards5].map((card, idx) => (
+        {[
+          selectedCards1,
+          selectedCards2,
+          selectedCards3,
+          selectedCards4,
+          selectedCards5,
+        ].map((card, idx) => (
           <div
             key={idx}
             className="border-2 border-blue-400 w-48 h-24 flex items-center justify-center bg-gray-100 rounded-lg shadow-md text-gray-700 transition-transform transform hover:scale-105 cursor-pointer"
             onClick={() =>
-                      handleBoxClick(
-                        card,
-                        [
-                          setSelectedCards1,
-                          setSelectedCards2,
-                          setSelectedCards3,
-                          setSelectedCards4,
-                        ][idx]
-                      )
-                    }
+              handleBoxClick(
+                card,
+                [
+                  setSelectedCards1,
+                  setSelectedCards2,
+                  setSelectedCards3,
+                  setSelectedCards4,
+                ][idx],
+              )
+            }
           >
-            <p className="text-md text-center whitespace-pre-line">{card.text}</p>
+            <p className="text-md text-center whitespace-pre-line">
+              {card.text}
+            </p>
           </div>
         ))}
       </div>
 
       {showSuccessPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div style={{ border: '2px solid #1E90FF', padding: '20px', backgroundColor: 'white', width: '400px', textAlign: 'center' }}>
-            <h2 style={{ color: '#FFA500' }}>Please Select the Path of treatment</h2>
+          <div
+            style={{
+              border: "2px solid #1E90FF",
+              padding: "20px",
+              backgroundColor: "white",
+              width: "400px",
+              textAlign: "center",
+            }}
+          >
+            <h2 style={{ color: "#FFA500" }}>
+              Please Select the Path of treatment
+            </h2>
             <button
               onClick={() => {
                 handleCompleteLevel2("/level5");
                 setShowSuccessPopup(false);
               }}
-              style={{ display: 'block', margin: '10px auto', backgroundColor: '#5C4033', color: 'white', padding: '10px 20px', border: 'none', cursor: 'pointer' }}
+              style={{
+                display: "block",
+                margin: "10px auto",
+                backgroundColor: "#5C4033",
+                color: "white",
+                padding: "10px 20px",
+                border: "none",
+                cursor: "pointer",
+              }}
             >
               No Envenomation
             </button>
@@ -281,7 +331,15 @@ const Level2 = ({ setCompletedLevels }) => {
                 handleCompleteLevel2("/level3");
                 setShowSuccessPopup(false);
               }}
-              style={{ display: 'block', margin: '10px auto', backgroundColor: '#5C4033', color: 'white', padding: '10px 20px', border: 'none', cursor: 'pointer' }}
+              style={{
+                display: "block",
+                margin: "10px auto",
+                backgroundColor: "#5C4033",
+                color: "white",
+                padding: "10px 20px",
+                border: "none",
+                cursor: "pointer",
+              }}
             >
               Possible Envenomation
             </button>
@@ -291,17 +349,35 @@ const Level2 = ({ setCompletedLevels }) => {
 
       {showFinalSuccessPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div style={{ border: '2px solid #1E90FF', padding: '20px', backgroundColor: 'white', width: '400px', textAlign: 'center' }}>
-            <h2 style={{ color: '#FFA500' }}>Congratulations, You are completed 7 star</h2>
+          <div
+            style={{
+              border: "2px solid #1E90FF",
+              padding: "20px",
+              backgroundColor: "white",
+              width: "400px",
+              textAlign: "center",
+            }}
+          >
+            <h2 style={{ color: "#FFA500" }}>
+              Congratulations, You are completed 7 star
+            </h2>
             <button
               onClick={() => {
                 confirmExit();
               }}
-              style={{ display: 'block', margin: '10px auto', backgroundColor: '#5C4033', color: 'white', padding: '10px 20px', border: 'none', cursor: 'pointer' }}
+              style={{
+                display: "block",
+                margin: "10px auto",
+                backgroundColor: "#5C4033",
+                color: "white",
+                padding: "10px 20px",
+                border: "none",
+                cursor: "pointer",
+              }}
             >
               click to play again
             </button>
-             {/* <button
+            {/* <button
               onClick={() => {
                 closeCromeModal();
               }}

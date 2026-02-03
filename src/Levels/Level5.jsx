@@ -3,6 +3,12 @@ import CustomAlert from "./CustomAlert"; // Importing the CustomAlert component
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaClock, FaQuestionCircle, FaStar } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
+import {
+  clearGameStorage,
+  initGameStorage,
+  storeLevelResult,
+  storeCurrentLevel,
+} from "../utils/gameStorage";
 
 const Level5 = ({ setCompletedLevels }) => {
   const navigate = useNavigate(); // For navigation to next level
@@ -18,39 +24,47 @@ const Level5 = ({ setCompletedLevels }) => {
 
   const handleCompleteLevel5 = () => {
     // Mark level 5 as completed
-    const completedLevels = {
-      level1: true,
-      level2: true,
-      level3: true,
-      level4: true,
-      level5: true,
-      level6: false,
-    };
-    localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
+    // const completedLevels = {
+    //   level1: true,
+    //   level2: true,
+    //   level3: true,
+    //   level4: true,
+    //   level5: true,
+    //   level6: false,
+    // };
+    // localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
 
     const array = [];
     array.push(selectedCards1.text);
     array.push(selectedCards2.text);
-    console.log(array);
-    localStorage.setItem("level5Result", JSON.stringify(array));
-    setCompletedLevels(completedLevels);
+    // console.log(array);
+    storeLevelResult("5", JSON.stringify(array));
+    // localStorage.setItem("level5Result", JSON.stringify(array));
+    // setCompletedLevels(completedLevels);
 
     // Automatically navigate to level 1
-    navigate("/result5", { state: { prev: location.state?.prev + '-5' || "1-2-3-4-5" } });
+    // navigate("/result5");
+    navigate("/result1");
   };
-  useEffect(() => {
-    // Save the current level path to localStorage
-    localStorage.setItem('currentLevel', location.pathname);
+  // useEffect(() => {
+  //   // Save the current level path to localStorage
+  //   localStorage.setItem("currentLevel", location.pathname);
 
-    // Retrieve current level from localStorage on reload
-    const savedLevel = localStorage.getItem('currentLevel');
-    if (savedLevel && savedLevel !== location.pathname) {
-      navigate(savedLevel); // Navigate to the saved level if it's different
-    }
-    const data = JSON.parse(localStorage.getItem("path")) || {};
-    const trueCount = Object.values(data).filter(value => value === true).length;
-    setStarCount(trueCount);
-  }, [location, navigate]);
+  //   // Retrieve current level from localStorage on reload
+  //   const savedLevel = localStorage.getItem("currentLevel");
+  //   if (savedLevel && savedLevel !== location.pathname) {
+  //     navigate(savedLevel); // Navigate to the saved level if it's different
+  //   }
+  //   const data = JSON.parse(localStorage.getItem("path")) || {};
+  //   const trueCount = Object.values(data).filter(
+  //     (value) => value === true,
+  //   ).length;
+  //   setStarCount(trueCount);
+  // }, [location, navigate]);
+
+  useEffect(() => {
+    storeCurrentLevel("5");
+  }, []);
 
   const initialDeck = [
     { id: 1, text: "Reassurance" },
@@ -71,7 +85,10 @@ const Level5 = ({ setCompletedLevels }) => {
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
     }
     return shuffledArray;
   };
@@ -126,13 +143,13 @@ const Level5 = ({ setCompletedLevels }) => {
 
     // Check if all selected cards exist in the correct sequence (regardless of order)
     const isCorrect = selectedCards.every((selectedCard) =>
-      correctCards.includes(selectedCard)
+      correctCards.includes(selectedCard),
     );
 
     if (isCorrect) {
       console.log("correct");
       setShowSuccessPopup(true);
-      localStorage.setItem("level5Result", JSON.stringify(selectedCards));
+      // localStorage.setItem("level5Result", JSON.stringify(selectedCards));
     } else {
       console.log("incorrect");
       setShowWrongPopup(true); // Show wrong popup
@@ -170,7 +187,9 @@ const Level5 = ({ setCompletedLevels }) => {
       <div className="absolute top-10 left-4 flex items-center gap-4">
         <div className="flex items-center gap-2">
           <FaStar className="text-yellow-500 text-xl sm:text-2xl" />
-          <span className="text-slate-50 text-sm sm:text-base">{starCount}</span>
+          <span className="text-slate-50 text-sm sm:text-base">
+            {starCount}
+          </span>
         </div>
       </div>
       {/* Icons on the top-right corner */}
@@ -184,7 +203,9 @@ const Level5 = ({ setCompletedLevels }) => {
         </div>
       </div>
       <div className="flex items-center justify-between w-full">
-        <h2 className="text-2xl font-bold text-slate-50 mx-auto mt-10"> {/* Added mt-10 to push header down */}
+        <h2 className="text-2xl font-bold text-slate-50 mx-auto mt-10">
+          {" "}
+          {/* Added mt-10 to push header down */}
           No sign of Envenomation
         </h2>
       </div>
@@ -204,7 +225,8 @@ const Level5 = ({ setCompletedLevels }) => {
               }
             }}
           >
-            <p className="text-xs break-words text-center">{card.text}</p> {/* Reduced font size to text-xs and used break-words */}
+            <p className="text-xs break-words text-center">{card.text}</p>{" "}
+            {/* Reduced font size to text-xs and used break-words */}
           </div>
         ))}
       </div>
@@ -225,10 +247,7 @@ const Level5 = ({ setCompletedLevels }) => {
               onClick={() =>
                 handleBoxClick(
                   card,
-                  [
-                    setSelectedCards1,
-                    setSelectedCards2
-                  ][idx]
+                  [setSelectedCards1, setSelectedCards2][idx],
                 )
               }
             >
@@ -239,9 +258,7 @@ const Level5 = ({ setCompletedLevels }) => {
       </div>
       {/* Success Popup for Correct Sequence */}
       {showSuccessPopup && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-        >
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md text-center z-50">
             <h2 className="text-2xl font-bold text-green-600 mb-4">
               Your choices are correct
