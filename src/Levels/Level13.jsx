@@ -3,6 +3,13 @@ import CustomAlert from "./CustomAlert"; // Importing the CustomAlert component
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaClock, FaStar, FaQuestionCircle } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
+import {
+  clearGameStorage,
+  initGameStorage,
+  storeLevelResult,
+  storeCurrentLevel,
+  getSpecificData,
+} from "../utils/gameStorage";
 
 const Level13 = ({ setCompletedLevels }) => {
   const navigate = useNavigate();
@@ -13,84 +20,88 @@ const Level13 = ({ setCompletedLevels }) => {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showWrongPopup, setShowWrongPopup] = useState(false);
   // const [countdown, setCountdown] = useState(1000);
-  const [starCount, setStarCount] = useState(0)
+  const [starCount, setStarCount] = useState(0);
 
+  // const handleCompleteLevel13 = () => {
+  //   // Mark level 10 as completed
+  //   // const completedLevels = {
+  //   //   level1: true,
+  //   //   level2: true,
+  //   //   level3: true,
+  //   //   level4: true,
+  //   //   level5: true,
+  //   //   level6: true,
+  //   //   level7: true,
+  //   //   level8: true,
+  //   //   level9: true,
+  //   //   level10: true,
+  //   //   level11: true,
+  //   //   level12: true,
+  //   //   level13: true,
+  //   //   level14: false,
+  //   // };
+  //   // localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
 
-  const handleCompleteLevel13 = () => {
-    // Mark level 10 as completed
-    const completedLevels = {
-      level1: true,
-      level2: true,
-      level3: true,
-      level4: true,
-      level5: true,
-      level6: true,
-      level7: true,
-      level8: true,
-      level9: true,
-      level10: true,
-      level11: true,
-      level12: true,
-      level13: true,
-      level14: false,
-    };
-    localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
+  //   const array = [];
+  //   array.push(selectedCards.text);
+  //   console.log(array);
+  //   localStorage.setItem("level13Result", JSON.stringify(array));
+  //   // setCompletedLevels(completedLevels);
 
-    const array = [];
-    array.push(selectedCards.text);
-    console.log(array);
-    localStorage.setItem("level13Result", JSON.stringify(array));
-    setCompletedLevels(completedLevels);
+  //   // Navigate to FinalResult13 based on path condition
+  //   // Navigate to FinalResult13 based on path condition
+  //   const isPathA = localStorage.getItem("level9Result");
+  //   var isPathC, isPathB;
 
-    // Navigate to FinalResult13 based on path condition
-    // Navigate to FinalResult13 based on path condition
-    const isPathA = localStorage.getItem("level9Result");
-    var isPathC, isPathB;
-    
-    if(localStorage.getItem("level10Result")){
-      if(localStorage.getItem("level14Result")){
-        isPathC = true;
-      }
-      else{
-        isPathB = true;
-      }
-    }
-    
-    navigate("/result13", { state: { isPathA: isPathA, isPathB: isPathB, isPathC: isPathC } });
-    
-    const path = location.state?.prev + '-' + 13;
-    const storedData = JSON.parse(localStorage.getItem("path")) || {};
-    if (storedData[path] == false) {
-      storedData[path] = true; // Update to true
-      localStorage.setItem("path", JSON.stringify(storedData));
-    }
-  };
+  //   if (localStorage.getItem("level10Result")) {
+  //     if (localStorage.getItem("level14Result")) {
+  //       isPathC = true;
+  //     } else {
+  //       isPathB = true;
+  //     }
+  //   }
+
+  //   navigate("/result13", {
+  //     state: { isPathA: isPathA, isPathB: isPathB, isPathC: isPathC },
+  //   });
+
+  //   const path = location.state?.prev + "-" + 13;
+  //   const storedData = JSON.parse(localStorage.getItem("path")) || {};
+  //   if (storedData[path] == false) {
+  //     storedData[path] = true; // Update to true
+  //     // localStorage.setItem("path", JSON.stringify(storedData));
+  //   }
+  // };
   useEffect(() => {
-    if (!location.state?.prev) {
-      alert("You are not allowed to access Level 13!");
-      navigate("/level1"); // Redirect to home or another page
-    }
-    const path = location.state?.prev + '-' + 13;
-    const storedData = JSON.parse(localStorage.getItem("path")) || {};
-    if (storedData[path]) {
-      alert("You have completed this path");
-      navigate("/level1"); // Redirect to home or another page
-    }
-    // Save the current level path to localStorage
-    localStorage.setItem("currentLevel", location.pathname);
+    // if (!location.state?.prev) {
+    //   alert("You are not allowed to access Level 13!");
+    //   navigate("/level1"); // Redirect to home or another page
+    // }
+    // const path = location.state?.prev + '-' + 13;
+    // const storedData = JSON.parse(localStorage.getItem("path")) || {};
+    // if (storedData[path]) {
+    //   alert("You have completed this path");
+    //   navigate("/level1"); // Redirect to home or another page
+    // }
+    // // Save the current level path to localStorage
+    // localStorage.setItem("currentLevel", location.pathname);
 
-    // Retrieve current level from localStorage on reload
-    const savedLevel = localStorage.getItem("currentLevel");
-    if (savedLevel && savedLevel !== location.pathname) {
-      navigate(savedLevel); // Navigate to the saved level if it's different
-    }
-  }, [location, navigate]);
+    // // Retrieve current level from localStorage on reload
+    // const savedLevel = localStorage.getItem("currentLevel");
+    // if (savedLevel && savedLevel !== location.pathname) {
+    //   navigate(savedLevel); // Navigate to the saved level if it's different
+    // }
+    setStarCount(getSpecificData("totalCompleted"));
+    storeCurrentLevel("13");
+  }, []);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("path")) || {};
-    const trueCount = Object.values(data).filter(value => value === true).length;
-    setStarCount(trueCount);
-  }, [])
+    // const data = JSON.parse(localStorage.getItem("path")) || {};
+    // const trueCount = Object.values(data).filter(
+    //   (value) => value === true,
+    // ).length;
+    // setStarCount(trueCount);
+  }, []);
 
   const initialDeck = [
     { id: 1, text: "Discharge only when no neuro-deficit present" },
@@ -119,7 +130,10 @@ const Level13 = ({ setCompletedLevels }) => {
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
     }
     return shuffledArray;
   };
@@ -235,13 +249,13 @@ const Level13 = ({ setCompletedLevels }) => {
 
     // Check if all selected cards exist in the correct sequence (regardless of order)
     const isCorrect = selectCard.every((selectedCard) =>
-      correctCards.includes(selectedCard)
+      correctCards.includes(selectedCard),
     );
 
     if (isCorrect) {
       console.log("correct");
       setShowSuccessPopup(true);
-      localStorage.setItem("level13Result", JSON.stringify(selectCard));
+      // localStorage.setItem("level13Result", JSON.stringify(selectCard));
     } else {
       console.log("incorrect");
       setShowWrongPopup(true); // Show wrong popup
@@ -263,7 +277,16 @@ const Level13 = ({ setCompletedLevels }) => {
 
   const handleSuccessClose = () => {
     setShowSuccessPopup(false);
-    handleCompleteLevel13();
+    // handleCompleteLevel13();
+    const array = [];
+    array.push(selectedCards.text);
+    storeLevelResult("13", JSON.stringify(array));
+    const currentPath = getSpecificData("currentPath");
+    if (currentPath == "1-2-3-4-6-7-10-18-13") {
+      navigate("/result6");
+    } else {
+      navigate("/result5");
+    }
   };
 
   const resetGame = () => {
@@ -296,12 +319,14 @@ const Level13 = ({ setCompletedLevels }) => {
       <div className="absolute top-4 left-4 flex items-center gap-4">
         <div className="flex items-center gap-2">
           <FaStar className="text-yellow-500 text-xl sm:text-2xl" />
-          <span className="text-slate-50 text-sm sm:text-base">{starCount}</span>
+          <span className="text-slate-50 text-sm sm:text-base">
+            {starCount}
+          </span>
         </div>
       </div>
       {/* Icons on the top-right corner */}
       <div className="absolute top-4 right-4 flex items-center gap-4">
-{/*         <div className="flex items-center gap-2 cursor-pointer">
+        {/*         <div className="flex items-center gap-2 cursor-pointer">
           <FaClock className="text-slate-50 text-xl sm:text-2xl" />
 
           <h2 className="text-xl text-blue-600 font-bold">
@@ -339,7 +364,9 @@ const Level13 = ({ setCompletedLevels }) => {
           Select the Correct Option
         </h2>
       </div>
-      <div className="mt-8 w-40 h-24 border-2 border-blue-500 flex items-center justify-center bg-gray-100 rounded-lg shadow-md text-gray-700"> {/* Reduced from w-60 h-32 to w-40 h-24 */}
+      <div className="mt-8 w-40 h-24 border-2 border-blue-500 flex items-center justify-center bg-gray-100 rounded-lg shadow-md text-gray-700">
+        {" "}
+        {/* Reduced from w-60 h-32 to w-40 h-24 */}
         <p className="text-md text-center">{selectedCards.text}</p>
       </div>
 
@@ -351,7 +378,9 @@ const Level13 = ({ setCompletedLevels }) => {
       {showSuccessPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md text-center">
-            <h2 className="text-2xl font-bold text-amber-600 mb-4">Your choices are correct</h2>
+            <h2 className="text-2xl font-bold text-amber-600 mb-4">
+              Your choices are correct
+            </h2>
             <h2 className="text-xl mb-4">
               To start the game again click on the button below
             </h2>
@@ -369,7 +398,9 @@ const Level13 = ({ setCompletedLevels }) => {
       {showWrongPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md text-center">
-            <h2 className="text-2xl font-bold text-red-400 mb-4">Your choices are incorrect</h2>
+            <h2 className="text-2xl font-bold text-red-400 mb-4">
+              Your choices are incorrect
+            </h2>
             {/* <p className="mb-6">You have selected the wrong sequence.</p> */}
             <button
               className="bg-red-400 text-white px-4 py-2 rounded-md"

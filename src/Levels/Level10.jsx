@@ -3,6 +3,13 @@ import CustomAlert from "./CustomAlert"; // Importing the CustomAlert component
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaClock, FaStar, FaQuestionCircle } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
+import {
+  clearGameStorage,
+  initGameStorage,
+  storeLevelResult,
+  storeCurrentLevel,
+  getSpecificData,
+} from "../utils/gameStorage";
 
 const Level10 = ({ setCompletedLevels }) => {
   const navigate = useNavigate();
@@ -17,59 +24,62 @@ const Level10 = ({ setCompletedLevels }) => {
   const [starCount, setStarCount] = useState(0);
 
   const handleCompleteLevel10 = () => {
-    const completedLevels = {
-      level1: true,
-      level2: true,
-      level3: true,
-      level4: true,
-      level5: true,
-      level6: true,
-      level7: true,
-      level8: true,
-      level9: true,
-      level10: true,
-      level11: false,
-    };
-    localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
+    // const completedLevels = {
+    //   level1: true,
+    //   level2: true,
+    //   level3: true,
+    //   level4: true,
+    //   level5: true,
+    //   level6: true,
+    //   level7: true,
+    //   level8: true,
+    //   level9: true,
+    //   level10: true,
+    //   level11: false,
+    // };
+    // localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
     const array = [];
     array.push(selectedCards1.text);
     array.push(selectedCards2.text);
-    console.log(array);
+    // console.log(array);
     localStorage.setItem("level10Result", JSON.stringify(array));
-    setCompletedLevels(completedLevels);
+    // setCompletedLevels(completedLevels);
   };
 
   useEffect(() => {
     // Only redirect to /level1 if no valid previous state and not on level10
-    if (!location.state?.prev && location.pathname !== "/level10") {
-      alert("You are not allowed to access Level 10!");
-      navigate("/level1");
-      return;
-    }
-
+    // if (!location.state?.prev && location.pathname !== "/level10") {
+    //   alert("You are not allowed to access Level 10!");
+    //   navigate("/level1");
+    //   return;
+    // }
     // Save the current level path to localStorage only if not from popup
-    if (!location.state?.fromPopup) {
-      localStorage.setItem('currentLevel', location.pathname);
-    }
-  }, [location, navigate]);
+    // if (!location.state?.fromPopup) {
+    //   localStorage.setItem('currentLevel', location.pathname);
+    // }
+    setStarCount(getSpecificData("totalCompleted"));
+    storeCurrentLevel("10");
+  }, []);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("path")) || {};
-    const trueCount = Object.values(data).filter(value => value === true).length;
-    setStarCount(trueCount);
+    // const data = JSON.parse(localStorage.getItem("path")) || {};
+    // const trueCount = Object.values(data).filter(
+    //   (value) => value === true,
+    // ).length;
+    // setStarCount(trueCount);
   }, []);
 
   const initialDeck = [
     { id: 1, text: "AN maintenance dose" },
     { id: 2, text: "Wait for another 30 min for improvement" },
-    { id: 3, text: "Second AN Loading Dose"},
+    { id: 3, text: "Second AN Loading Dose" },
     { id: 4, text: "Wait for 1 hour" },
     { id: 5, text: "Transfer to referral hospital" },
     { id: 6, text: "Ventilator Support" },
   ];
 
   const correctSequence = [
-    { id: 3, text: "Second AN Loading Dose"},
+    { id: 3, text: "Second AN Loading Dose" },
     { id: 2, text: "Wait for another 30 min for improvement" },
   ];
 
@@ -79,7 +89,10 @@ const Level10 = ({ setCompletedLevels }) => {
   }, []);
 
   useEffect(() => {
-    if (selectedCards1.text !== undefined && selectedCards2.text !== undefined) {
+    if (
+      selectedCards1.text !== undefined &&
+      selectedCards2.text !== undefined
+    ) {
       res();
     }
   }, [selectedCards1, selectedCards2]);
@@ -88,7 +101,10 @@ const Level10 = ({ setCompletedLevels }) => {
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
     }
     return shuffledArray;
   };
@@ -109,41 +125,46 @@ const Level10 = ({ setCompletedLevels }) => {
     const selectedCards = [selectedCards1.text, selectedCards2.text];
     const correctCards = correctSequence.map((card) => card.text);
     const isCorrect = selectedCards.every((selectedCard) =>
-      correctCards.includes(selectedCard)
+      correctCards.includes(selectedCard),
     );
     if (isCorrect) {
       console.log("correct");
       setShowSuccessPopup(true);
-      localStorage.setItem("level10Result", JSON.stringify(selectedCards));
+      // localStorage.setItem("level10Result", JSON.stringify(selectedCards));
     } else {
       console.log("incorrect");
       setShowWrongPopup(true);
     }
   };
 
-  const handleBoxClick = () => {
-    if (selectedCards1 && selectedCards2) {
-      const userSequence = [selectedCards1, selectedCards2];
-      const correctSequenceIds = correctSequence.map((card) => card.id);
-      const userSequenceIds = userSequence.map((card) => card.id);
-      if (userSequenceIds.join(",") === correctSequenceIds.join(",")) {
-        setShowSuccessPopup(true);
-      } else {
-        setShowWrongPopup(true);
-      }
-    }
-  };
+  // const handleBoxClick = () => {
+  //   if (selectedCards1 && selectedCards2) {
+  //     const userSequence = [selectedCards1, selectedCards2];
+  //     const correctSequenceIds = correctSequence.map((card) => card.id);
+  //     const userSequenceIds = userSequence.map((card) => card.id);
+  //     if (userSequenceIds.join(",") === correctSequenceIds.join(",")) {
+  //       setShowSuccessPopup(true);
+  //     } else {
+  //       setShowWrongPopup(true);
+  //     }
+  //   }
+  // };
 
   const handleSuccessClose = (nextLevel) => {
     setShowSuccessPopup(false);
-    handleCompleteLevel10();
-    const completedLevels = JSON.parse(localStorage.getItem("completedLevels")) || {};
-    completedLevels.level10 = true;
-    localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
-    setCompletedLevels(completedLevels);
+    // handleCompleteLevel10();
+    const array = [];
+    array.push(selectedCards1.text);
+    array.push(selectedCards2.text);
+    storeLevelResult("10", JSON.stringify(array));
+    // const completedLevels =
+    //   JSON.parse(localStorage.getItem("completedLevels")) || {};
+    // completedLevels.level10 = true;
+    // localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
+    // setCompletedLevels(completedLevels);
     // Use a flag to indicate popup navigation and clear currentLevel if from popup
-    localStorage.removeItem('currentLevel'); // Clear to prevent override
-    navigate(nextLevel, { state: { prev: location.state?.prev + '-' + 10, fromPopup: true } });
+    // localStorage.removeItem("currentLevel"); // Clear to prevent override
+    navigate(nextLevel);
   };
 
   const resetGame = () => {
@@ -164,12 +185,17 @@ const Level10 = ({ setCompletedLevels }) => {
   return (
     <div
       className="p-4 sm:p-6 flex flex-col items-center relative w-full h-screen overflow-auto"
-      style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover" }}
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+      }}
     >
       <div className="absolute top-4 left-4 flex items-center gap-4">
         <div className="flex items-center gap-2">
           <FaStar className="text-yellow-500 text-xl sm:text-2xl" />
-          <span className="text-slate-50 text-sm sm:text-base">{starCount}</span>
+          <span className="text-slate-50 text-sm sm:text-base">
+            {starCount}
+          </span>
         </div>
       </div>
 
@@ -193,11 +219,9 @@ const Level10 = ({ setCompletedLevels }) => {
             onClick={() => {
               if (!selectedCards1.text) {
                 selectCard(card, setSelectedCards1);
-              }
-              else if (!selectedCards2.text) {
+              } else if (!selectedCards2.text) {
                 selectCard(card, setSelectedCards2);
-              }
-              else {
+              } else {
                 console.log("Both selections are filled.");
               }
             }}

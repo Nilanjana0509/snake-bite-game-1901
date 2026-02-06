@@ -9,7 +9,7 @@ import {
   storeLevelResult,
 } from "../utils/gameStorage";
 
-const Level1 = ({ setCompletedLevels }) => {
+const Level1 = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [deck, setDeck] = useState([]);

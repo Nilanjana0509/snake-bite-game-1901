@@ -21,6 +21,7 @@ export function initGameStorage(tc = 0, cl = 1, cp = "1", comp = [], lr = {}) {
     completedPaths: [],
     completedLevels: {},
     levelResults: {},
+    metaData: {},
   };
 
   writeState(initialState);
@@ -56,11 +57,17 @@ export function storeCurrentLevel(level) {
 //   writeState(state);
 // }
 
-export function getSpecificData(key) {
+export function getSpecificData(key, subkey = "") {
   const state = readState();
-  if (!state) return null;
+  if (!state || !state.hasOwnProperty(key)) return null;
 
-  return state.hasOwnProperty(key) ? state[key] : null;
+  // if subkey is provided, return nested value
+  if (subkey) {
+    return state[key]?.hasOwnProperty(subkey) ? state[key][subkey] : null;
+  }
+
+  // otherwise return the full object
+  return state[key];
 }
 
 export function completePath() {
@@ -89,4 +96,49 @@ export function getResult1Data() {
     level2Result: state.levelResults[2] || [],
     level5Result: state.levelResults[5] || [],
   };
+}
+
+export function getResult7Data() {
+  const state = readState();
+  if (!state || !state.levelResults) return null;
+
+  return {
+    level1Result: state.levelResults[1] || [],
+    level2Result: state.levelResults[2] || [],
+    level3Result: state.levelResults[3] || [],
+    level4Result: state.levelResults[4] || [],
+    level6Result: state.levelResults[6] || [],
+    level7Result: state.levelResults[7] || [],
+    level10Result: state.levelResults[10] || [],
+    level14Result: state.levelResults[14] || [],
+  };
+}
+
+export function getResult6Data() {
+  const state = readState();
+  if (!state || !state.levelResults) return null;
+  return {
+    level1Result: state.levelResults[1] || [],
+    level2Result: state.levelResults[2] || [],
+    level3Result: state.levelResults[3] || [],
+    level4Result: state.levelResults[4] || [],
+    level6Result: state.levelResults[6] || [],
+    level7Result: state.levelResults[7] || [],
+    level10Result: state.levelResults[10] || [],
+    level18Result: state.levelResults[18] || [],
+    level13Result: state.levelResults[13] || [],
+  };
+}
+
+export function setMetaData(level, metaData) {
+  const state = readState();
+  if (!state) return null;
+  state.metaData[level] = metaData;
+  writeState(state);
+}
+export function isPathCompleted(path) {
+  const state = readState();
+  if (!state || !Array.isArray(state.completedPaths)) return false;
+
+  return state.completedPaths.includes(path);
 }

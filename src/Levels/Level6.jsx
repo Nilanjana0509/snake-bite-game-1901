@@ -3,6 +3,13 @@ import CustomAlert from "./CustomAlert"; // Importing the CustomAlert component
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaClock, FaStar, FaQuestionCircle } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
+import {
+  clearGameStorage,
+  initGameStorage,
+  storeLevelResult,
+  storeCurrentLevel,
+  getSpecificData,
+} from "../utils/gameStorage";
 
 const Level6 = ({ setCompletedLevels }) => {
   const navigate = useNavigate();
@@ -20,52 +27,56 @@ const Level6 = ({ setCompletedLevels }) => {
 
   const handleCompleteLevel6 = (nextLevel) => {
     // Mark level 6 as completed
-    const completedLevels = {
-      level1: true,
-      level2: true,
-      level3: true,
-      level4: true,
-      level5: true,
-      level6: true,
-      level7: false,
-    };
-    localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
+    // const completedLevels = {
+    //   level1: true,
+    //   level2: true,
+    //   level3: true,
+    //   level4: true,
+    //   level5: true,
+    //   level6: true,
+    //   level7: false,
+    // };
+    // localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
     const array = [];
     array.push(selectedCards1.text);
     array.push(selectedCards2.text);
     array.push(selectedCards3.text);
 
-    console.log(array);
-    localStorage.setItem("level6Result", JSON.stringify(array));
-    setCompletedLevels(completedLevels);
-
+    // console.log(array);
+    // localStorage.setItem("level6Result", JSON.stringify(array));
+    // setCompletedLevels(completedLevels);
+    storeLevelResult("6", JSON.stringify(array));
     // Navigate to the specified next level
-    navigate(nextLevel, { state: { prev: location.state?.prev + '-' + 6 , origin: 'level6'} });
+    navigate(nextLevel);
   };
 
   useEffect(() => {
-    console.log(location.state?.prev);
-    
-    if (!location.state?.prev) {
-      alert("You are not allowed to access Level 6!");
-      navigate("/level1"); // Redirect to home or another page
-    }
+    // console.log(location.state?.prev);
 
-    // Save the current level path to localStorage
-    localStorage.setItem("currentLevel", location.pathname);
+    // if (!location.state?.prev) {
+    //   alert("You are not allowed to access Level 6!");
+    //   navigate("/level1"); // Redirect to home or another page
+    // }
 
-    // Retrieve current level from localStorage on reload
-    const savedLevel = localStorage.getItem("currentLevel");
-    if (savedLevel && savedLevel !== location.pathname) {
-      navigate(savedLevel); // Navigate to the saved level if it's different
-    }
-  }, [location, navigate]);
+    // // Save the current level path to localStorage
+    // localStorage.setItem("currentLevel", location.pathname);
 
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("path")) || {};
-    const trueCount = Object.values(data).filter(value => value === true).length;
-    setStarCount(trueCount);
+    // // Retrieve current level from localStorage on reload
+    // const savedLevel = localStorage.getItem("currentLevel");
+    // if (savedLevel && savedLevel !== location.pathname) {
+    //   navigate(savedLevel); // Navigate to the saved level if it's different
+    // }
+    setStarCount(getSpecificData("totalCompleted"));
+    storeCurrentLevel("6");
   }, []);
+
+  // useEffect(() => {
+  //   const data = JSON.parse(localStorage.getItem("path")) || {};
+  //   const trueCount = Object.values(data).filter(
+  //     (value) => value === true,
+  //   ).length;
+  //   setStarCount(trueCount);
+  // }, []);
 
   const initialDeck = [
     { id: 1, text: "Inj. Adrenalin" },
@@ -116,7 +127,7 @@ const Level6 = ({ setCompletedLevels }) => {
 
   useEffect(() => {
     // Retrieve the selected envenomation type from Level 3
-    const envenomationType = localStorage.getItem("selectedEnvenomationType") || "";
+    const envenomationType = getSpecificData("metaData", "envenomationType");
     setLevel3Selection(envenomationType);
   }, []);
 
@@ -165,13 +176,13 @@ const Level6 = ({ setCompletedLevels }) => {
 
     // Check if all selected cards exist in the correct sequence (regardless of order)
     const isCorrect = selectedCards.every((selectedCard) =>
-      correctCards.includes(selectedCard)
+      correctCards.includes(selectedCard),
     );
 
     if (isCorrect) {
       console.log("correct");
       setShowSuccessPopup(true);
-      localStorage.setItem("level6Result", JSON.stringify(selectedCards));
+      // localStorage.setItem("level6Result", JSON.stringify(selectedCards));
     } else {
       console.log("incorrect");
       setShowWrongPopup(true); // Show wrong popup
@@ -230,13 +241,18 @@ const Level6 = ({ setCompletedLevels }) => {
   return (
     <div
       className="p-4 sm:p-6 flex flex-col items-center relative h-screen w-full overflow-auto"
-      style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover" }}
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+      }}
     >
       {/* Star count on the top-left corner */}
       <div className="absolute top-4 left-4 flex items-center gap-4">
         <div className="flex items-center gap-2">
           <FaStar className="text-yellow-500 text-xl sm:text-2xl" />
-          <span className="text-slate-50 text-sm sm:text-base">{starCount}</span>
+          <span className="text-slate-50 text-sm sm:text-base">
+            {starCount}
+          </span>
         </div>
       </div>
 
@@ -249,8 +265,8 @@ const Level6 = ({ setCompletedLevels }) => {
       </div>
       <div className="flex items-center justify-between w-full mt-6 mb-3">
         <h2 className="text-2xl font-bold text-slate-50 mx-auto mr-50 text-center">
-          5 mins after starting AVS, patient develops Anaphylactoid reactions.<br />{" "}
-          Options available for management:
+          5 mins after starting AVS, patient develops Anaphylactoid reactions.
+          <br /> Options available for management:
         </h2>
       </div>
 

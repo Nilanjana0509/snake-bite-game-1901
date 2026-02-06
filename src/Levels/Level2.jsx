@@ -10,7 +10,7 @@ import {
   getSpecificData,
 } from "../utils/gameStorage";
 
-const Level2 = ({ setCompletedLevels }) => {
+const Level2 = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [level2Selection, setLevel2Selection] = useState(null);

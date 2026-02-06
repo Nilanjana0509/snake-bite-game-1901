@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ModalController from "../components/modals/ModalController";
 import {
-  getResult1Data,
+  getResult6Data,
   completePath,
   clearGameStorage,
   getSpecificData,
+  isPathCompleted,
 } from "../utils/gameStorage";
 // path 1 - 2 -5
-function FinalResult1() {
+function FinalResult6() {
   const [showStarPopup, setShowStarPopup] = useState(true);
   const [showWarningPopup, setShowWarningPopup] = useState(false);
   const [showCompletionPopup, setShowCompletionPopup] = useState(false);
@@ -18,14 +19,22 @@ function FinalResult1() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const result = getResult1Data();
+    const result = getResult6Data();
     setAllResults(result);
   }, []);
 
   const levelTitles = {
     level1Result: "You have come across a patient of Snake bite",
     level2Result: "Initial Management",
-    level5Result: "No sign of Envenomation",
+    level3Result:
+      "Various findings related to Snake bite considering one type of envenomation",
+    level4Result: "Options available for management",
+    level6Result:
+      "5 mins after starting AVS, patient develops Anaphylactoid. Options available for management",
+    level7Result: "Neurological signs",
+    level10Result: "Not improving after 30 min",
+    level18Result: "improvement seen after 1 hour",
+    level13Result: "Improving",
   };
   const handlepopup = () => {
     completePath();
@@ -39,7 +48,11 @@ function FinalResult1() {
     } else if (startCount == 1) {
       setShowModal(true);
     } else {
-      navigate("/level2");
+      if (isPathCompleted("1-2-5")) {
+        navigate("/level3");
+      } else {
+        navigate("/level2");
+      }
     }
   };
   const handleExitClick = () => {
@@ -164,4 +177,4 @@ function FinalResult1() {
   );
 }
 
-export default FinalResult1;
+export default FinalResult6;

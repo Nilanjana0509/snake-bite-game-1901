@@ -3,6 +3,13 @@ import CustomAlert from "./CustomAlert";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaClock, FaStar, FaQuestionCircle } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
+import {
+  clearGameStorage,
+  initGameStorage,
+  storeLevelResult,
+  storeCurrentLevel,
+  getSpecificData,
+} from "../utils/gameStorage";
 
 const Level14 = ({ setCompletedLevels }) => {
   const navigate = useNavigate();
@@ -50,23 +57,25 @@ const Level14 = ({ setCompletedLevels }) => {
   };
 
   useEffect(() => {
-    if (!location.state?.prev) {
-      alert("You are not allowed to access Level 14!");
-      navigate("/"); // Redirect to home or another page
-    }
-
-    localStorage.setItem('currentLevel', location.pathname);
-
-    const savedLevel = localStorage.getItem('currentLevel');
-    if (savedLevel && savedLevel !== location.pathname) {
-      navigate(savedLevel);
-    }
-  }, [location, navigate]);
+    // if (!location.state?.prev) {
+    //   alert("You are not allowed to access Level 14!");
+    //   navigate("/"); // Redirect to home or another page
+    // }
+    // localStorage.setItem("currentLevel", location.pathname);
+    // const savedLevel = localStorage.getItem("currentLevel");
+    // if (savedLevel && savedLevel !== location.pathname) {
+    //   navigate(savedLevel);
+    // }
+    setStarCount(getSpecificData("totalCompleted"));
+    storeCurrentLevel("14");
+  }, []);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("path")) || {};
-    const trueCount = Object.values(data).filter(value => value === true).length;
-    setStarCount(trueCount);
+    // const data = JSON.parse(localStorage.getItem("path")) || {};
+    // const trueCount = Object.values(data).filter(
+    //   (value) => value === true,
+    // ).length;
+    // setStarCount(trueCount);
   }, []);
 
   const initialDeck = [
@@ -75,20 +84,23 @@ const Level14 = ({ setCompletedLevels }) => {
     { id: 4, text: "20 vials AVS" },
     { id: 5, text: "Transfer to referral hospital" },
     { id: 6, text: "Inj. Hydrocortisone" },
-    { id: 7, text: "artificial ventilation S.O.S"}
+    { id: 7, text: "artificial ventilation S.O.S" },
   ];
 
   const correctSequence = [
     { id: 5, text: "Transfer to referral hospital" },
     { id: 2, text: "10 vial AVS" },
-    { id: 7, text: "artificial ventilation S.O.S"}
+    { id: 7, text: "artificial ventilation S.O.S" },
   ];
 
   const shuffle = (array) => {
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
     }
     return shuffledArray;
   };
@@ -122,26 +134,38 @@ const Level14 = ({ setCompletedLevels }) => {
   };
 
   const res = () => {
-    const selectedCards = [selectedCards1.text, selectedCards2.text, selectedCards3.text];
+    const selectedCards = [
+      selectedCards1.text,
+      selectedCards2.text,
+      selectedCards3.text,
+    ];
     const correctCards = correctSequence.map((card) => card.text);
     const isCorrect = selectedCards.every((selectedCard) =>
-      correctCards.includes(selectedCard)
+      correctCards.includes(selectedCard),
     );
 
     if (isCorrect) {
       console.log("correct");
       setShowSuccessPopup(true);
-      localStorage.setItem("level14Result", JSON.stringify(selectedCards));
+      // localStorage.setItem("level14Result", JSON.stringify(selectedCards));
     } else {
       console.log("incorrect");
       setShowWrongPopup(true);
     }
   };
 
-  const handleSuccessClose = (nextLevel) => {
+  const handleSuccessClose = () => {
     setShowSuccessPopup(false);
-    handleCompleteLevel14();
-    navigate(nextLevel, { state: { prev: location.state?.prev + '-' + 14 } });
+    // handleCompleteLevel14();
+    const array = [];
+    array.push(selectedCards1.text);
+    array.push(selectedCards2.text);
+    array.push(selectedCards3.text);
+    // array.push(selectedCards4.text);
+    // console.log(array);
+    // localStorage.setItem("level14Result", JSON.stringify(array));
+    storeLevelResult("14", JSON.stringify(array));
+    navigate("/result7");
   };
 
   const resetGame = () => {
@@ -165,7 +189,6 @@ const Level14 = ({ setCompletedLevels }) => {
     const newCards = [...deck, card];
     setDeck(newCards);
   };
-  
 
   return (
     <div
@@ -178,7 +201,9 @@ const Level14 = ({ setCompletedLevels }) => {
       <div className="absolute top-4 left-4 flex items-center gap-4">
         <div className="flex items-center gap-2">
           <FaStar className="text-yellow-500 text-xl sm:text-2xl" />
-          <span className="text-slate-50 text-sm sm:text-base">{starCount}</span>
+          <span className="text-slate-50 text-sm sm:text-base">
+            {starCount}
+          </span>
         </div>
       </div>
       <div className="absolute top-4 right-4 flex items-center gap-4">
@@ -199,11 +224,11 @@ const Level14 = ({ setCompletedLevels }) => {
             key={card.id}
             className="border border-blue-500 bg-gray-100 rounded-lg text-center cursor-pointer hover:bg-gray-200 flex justify-center items-center text-sm sm:text-base p-2"
             onClick={() => {
-             if (!selectedCards1.text) {
+              if (!selectedCards1.text) {
                 selectCard(card, setSelectedCards1);
               } else if (!selectedCards2.text) {
                 selectCard(card, setSelectedCards2);
-              } else if(!selectedCards3.text){
+              } else if (!selectedCards3.text) {
                 selectCard(card, setSelectedCards3);
               } else {
                 console.log("Both selections are filled.");
@@ -235,9 +260,7 @@ const Level14 = ({ setCompletedLevels }) => {
           >
             <p className="text-md text-center">{selectedCards2.text}</p>
           </div>
-          <div
-            className="border-2 border-blue-400 w-40 h-24 flex items-center justify-center bg-gray-100 rounded-lg shadow-md text-gray-700 transition-transform transform hover:scale-105"
-          >
+          <div className="border-2 border-blue-400 w-40 h-24 flex items-center justify-center bg-gray-100 rounded-lg shadow-md text-gray-700 transition-transform transform hover:scale-105">
             <p className="text-md text-center">{selectedCards3.text}</p>
           </div>
           {/* <div
@@ -249,25 +272,25 @@ const Level14 = ({ setCompletedLevels }) => {
       </div>
 
       {showSuccessPopup && (
-          <div
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" // Added z-50 here
-          >
-            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md text-center z-50">
-              <h2 className="text-2xl font-bold text-green-600 mb-4">
-                Your choices are correct
-              </h2>
-              <h2 className="text-xl mb-4">
-                To start the game again click on the button below
-              </h2>
-              <button
-                className="bg-amber-950 text-white px-4 py-2 rounded-md "
-                onClick={handleSuccessClose}
-              >
-                Submit & Start Over
-              </button>
-            </div>
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" // Added z-50 here
+        >
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md text-center z-50">
+            <h2 className="text-2xl font-bold text-green-600 mb-4">
+              Your choices are correct
+            </h2>
+            <h2 className="text-xl mb-4">
+              To start the game again click on the button below
+            </h2>
+            <button
+              className="bg-amber-950 text-white px-4 py-2 rounded-md "
+              onClick={handleSuccessClose}
+            >
+              Submit & Start Over
+            </button>
           </div>
-        )}
+        </div>
+      )}
 
       {showWrongPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">

@@ -3,6 +3,13 @@ import CustomAlert from "./CustomAlert"; // Importing the CustomAlert component
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaQuestionCircle, FaStar } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
+import {
+  clearGameStorage,
+  initGameStorage,
+  storeLevelResult,
+  storeCurrentLevel,
+  getSpecificData,
+} from "../utils/gameStorage";
 
 const Level4 = ({ setCompletedLevels }) => {
   const navigate = useNavigate();
@@ -20,38 +27,40 @@ const Level4 = ({ setCompletedLevels }) => {
 
   const handleCompleteLevel4 = (level) => {
     // Mark level 4 as completed
-    const completedLevels = {
-      level1: true,
-      level2: true,
-      level3: true,
-      level4: true,
-    };
-    localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
+    // const completedLevels = {
+    //   level1: true,
+    //   level2: true,
+    //   level3: true,
+    //   level4: true,
+    // };
+    // localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
 
     const array = [];
     array.push(selectedCards1.text);
     array.push(selectedCards2.text);
 
-    console.log(array);
-    localStorage.setItem("level4Result", JSON.stringify(array));
-    setCompletedLevels(completedLevels);
-
+    // console.log(array);
+    // localStorage.setItem("level4Result", JSON.stringify(array));
+    // setCompletedLevels(completedLevels);
+    storeLevelResult("4", JSON.stringify(array));
     // Navigate to level 6
-    navigate(level, { state: { prev: location.state?.prev + '-4' || "1-2-3-4" } });
+    navigate(level);
   };
   useEffect(() => {
-    // Save the current level path to localStorage
-    localStorage.setItem("currentLevel", location.pathname);
+    // // Save the current level path to localStorage
+    // localStorage.setItem("currentLevel", location.pathname);
 
-    // Retrieve current level from localStorage on reload
-    const savedLevel = localStorage.getItem("currentLevel");
-    if (savedLevel && savedLevel !== location.pathname) {
-      navigate(savedLevel); // Navigate to the saved level if it's different
-    }
-    const data = JSON.parse(localStorage.getItem("path")) || {};
-    const trueCount = Object.values(data).filter(value => value === true).length;
-    setStarCount(trueCount);
-  }, [location, navigate]);
+    // // Retrieve current level from localStorage on reload
+    // const savedLevel = localStorage.getItem("currentLevel");
+    // if (savedLevel && savedLevel !== location.pathname) {
+    //   navigate(savedLevel); // Navigate to the saved level if it's different
+    // }
+    // const data = JSON.parse(localStorage.getItem("path")) || {};
+    // const trueCount = Object.values(data).filter(value => value === true).length;
+    // setStarCount(trueCount);
+    setStarCount(getSpecificData("totalCompleted"));
+    storeCurrentLevel("4");
+  }, []);
 
   const initialDeck = [
     { id: 1, text: "AVS" },
@@ -99,13 +108,13 @@ const Level4 = ({ setCompletedLevels }) => {
     }
   }, [selectedCards1, selectedCards2]);
 
-  useEffect(() => {
-    // Retrieve the selection from Level 2 from localStorage
-    const level3Result = JSON.parse(localStorage.getItem("level3Result")) || [];
-    if (level3Result) {
-      setLevel3Selection(level3Result);
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Retrieve the selection from Level 2 from localStorage
+  //   const level3Result = JSON.parse(localStorage.getItem("level3Result")) || [];
+  //   if (level3Result) {
+  //     setLevel3Selection(level3Result);
+  //   }
+  // }, []);
 
   // Function to move to the next card in the deck
   const showNextCard = () => {
@@ -117,7 +126,6 @@ const Level4 = ({ setCompletedLevels }) => {
       setDeckIndex(0); // Reset to the first card when the deck ends
     }
   };
-
 
   // Shuffle function
   const shuffle = (array) => {
@@ -136,13 +144,18 @@ const Level4 = ({ setCompletedLevels }) => {
 
   useEffect(() => {
     // Retrieve the selection from Level 3 from localStorage
-    const level3Result = JSON.parse(localStorage.getItem("level3Result")) || [];
+    // const level3Result = JSON.parse(localStorage.getItem("level3Result")) || [];
+    const envenomationType = getSpecificData("metaData", "envenomationType");
 
     // Determine the heading based on the code selection
-    if (level3Result.some((code) => code === "h")) {
-      setHeading("Options available for management, Select from below options (Haemotoxic envenomation selected)");
-    } else if (level3Result.some((code) => code === "n")) {
-      setHeading("Options available for management, Select from below options (Neurotoxic envenomation selected)");
+    if (envenomationType == "Haemotoxic Envenomation") {
+      setHeading(
+        "Options available for management, Select from below options (Haemotoxic envenomation selected)",
+      );
+    } else if (envenomationType == "Neurotoxic Envenomation") {
+      setHeading(
+        "Options available for management, Select from below options (Neurotoxic envenomation selected)",
+      );
     } else {
       setHeading("Options available for management");
     }
@@ -157,13 +170,13 @@ const Level4 = ({ setCompletedLevels }) => {
 
     // Check if all selected cards exist in the correct sequence (regardless of order)
     const isCorrect = selectedCards.every((selectedCard) =>
-      correctCards.includes(selectedCard)
+      correctCards.includes(selectedCard),
     );
 
     if (isCorrect) {
       console.log("correct");
       setShowSuccessPopup(true);
-      localStorage.setItem("level4Result", JSON.stringify(selectedCards));
+      // localStorage.setItem("level4Result", JSON.stringify(selectedCards));
     } else {
       console.log("incorrect");
       setShowWrongPopup(true); // Show wrong popup
@@ -189,7 +202,6 @@ const Level4 = ({ setCompletedLevels }) => {
     setDeck((prevDeck) => [...prevDeck, card]);
     boxSetter({});
   };
-  
 
   const handleSuccessClose = () => {
     setShowSuccessPopup(false);
@@ -206,26 +218,31 @@ const Level4 = ({ setCompletedLevels }) => {
     setDeck(initialDeck);
   };
 
-  const codeSelection = () => {
-    const level3Result = JSON.parse(localStorage.getItem("level3Result")) || [];
-    for (let i = 0; i < level3Result.length; i++) {
-      if (level3Result[i] === "X") {
-        return false;
-      }
-    }
-    return true;
-  };
+  // const codeSelection = () => {
+  //   const level3Result = JSON.parse(localStorage.getItem("level3Result")) || [];
+  //   for (let i = 0; i < level3Result.length; i++) {
+  //     if (level3Result[i] === "X") {
+  //       return false;
+  //     }
+  //   }
+  //   return true;
+  // };
 
   return (
     <div
       className="p-4 sm:p-6 flex flex-col items-center relative h-screen w-full overflow-auto"
-      style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover" }}
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+      }}
     >
       {/* Star count on the top-left corner */}
       <div className="absolute top-10 left-4 flex items-center gap-4">
         <div className="flex items-center gap-2">
           <FaStar className="text-yellow-500 text-xl sm:text-2xl" />
-          <span className="text-slate-50 text-sm sm:text-base">{starCount}</span>
+          <span className="text-slate-50 text-sm sm:text-base">
+            {starCount}
+          </span>
         </div>
       </div>
       {/* Icons on the top-right corner */}
@@ -235,7 +252,9 @@ const Level4 = ({ setCompletedLevels }) => {
         </div>
       </div>
       <div className="flex items-center justify-between w-full">
-        <h2 className="text-2xl font-bold text-slate-50 mx-auto mt-10"> {/* Added mt-10 to push header down */}
+        <h2 className="text-2xl font-bold text-slate-50 mx-auto mt-10">
+          {" "}
+          {/* Added mt-10 to push header down */}
           {heading} {/* Render the heading dynamically */}
         </h2>
       </div>
@@ -255,7 +274,8 @@ const Level4 = ({ setCompletedLevels }) => {
               }
             }}
           >
-            <p className="text-xs break-words text-center">{card.text}</p> {/* Reduced font size to text-xs and used break-words */}
+            <p className="text-xs break-words text-center">{card.text}</p>{" "}
+            {/* Reduced font size to text-xs and used break-words */}
           </div>
         ))}
       </div>
@@ -276,10 +296,7 @@ const Level4 = ({ setCompletedLevels }) => {
               onClick={() =>
                 handleBoxClick(
                   card,
-                  [
-                    setSelectedCards1,
-                    setSelectedCards2
-                  ][idx]
+                  [setSelectedCards1, setSelectedCards2][idx],
                 )
               }
             >
@@ -296,14 +313,12 @@ const Level4 = ({ setCompletedLevels }) => {
             <h2 className="text-2xl font-bold text-green-600 mb-4">
               Your choices are correct
             </h2>
-            {codeSelection && ( // Check if codeSelection is valid
-              <button
-                onClick={() => handleCompleteLevel4("/level6")} // Ensure this function navigates correctly
-                className="mt-4 bg-amber-950 text-white px-4 py-2 rounded-lg "
-              >
-                Go to next step
-              </button>
-            )}
+            <button
+              onClick={() => handleCompleteLevel4("/level6")} // Ensure this function navigates correctly
+              className="mt-4 bg-amber-950 text-white px-4 py-2 rounded-lg "
+            >
+              Go to next step
+            </button>
           </div>
         </div>
       )}

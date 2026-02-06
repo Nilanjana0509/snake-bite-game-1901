@@ -3,6 +3,13 @@ import CustomAlert from "./CustomAlert"; // Importing the CustomAlert component
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaClock, FaStar, FaQuestionCircle } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
+import {
+  clearGameStorage,
+  initGameStorage,
+  storeLevelResult,
+  storeCurrentLevel,
+  getSpecificData,
+} from "../utils/gameStorage";
 
 const Level18 = ({ setCompletedLevels }) => {
   const navigate = useNavigate();
@@ -16,7 +23,7 @@ const Level18 = ({ setCompletedLevels }) => {
   const [showWrongPopup, setShowWrongPopup] = useState(false);
   const [result, SetResult] = useState([]);
   // const [countdown, setCountdown] = useState(1000);
-  const [starCount, setStarCount] = useState(0)
+  const [starCount, setStarCount] = useState(0);
 
   const handleCompleteLevel9 = () => {
     // Mark level 7 as completed
@@ -46,25 +53,28 @@ const Level18 = ({ setCompletedLevels }) => {
     // navigate("/level10");
   };
   useEffect(() => {
-    if (!location.state?.prev) {
-      alert("You are not allowed to access Level 18!");
-      navigate("/level1"); // Redirect to home or another page
-    }
-    // Save the current level path to localStorage
-    localStorage.setItem('currentLevel', location.pathname);
-
-    // Retrieve current level from localStorage on reload
-    const savedLevel = localStorage.getItem('currentLevel');
-    if (savedLevel && savedLevel !== location.pathname) {
-      navigate(savedLevel); // Navigate to the saved level if it's different
-    }
-  }, [location, navigate]);
+    // if (!location.state?.prev) {
+    //   alert("You are not allowed to access Level 18!");
+    //   navigate("/level1"); // Redirect to home or another page
+    // }
+    // // Save the current level path to localStorage
+    // localStorage.setItem('currentLevel', location.pathname);
+    // // Retrieve current level from localStorage on reload
+    // const savedLevel = localStorage.getItem('currentLevel');
+    // if (savedLevel && savedLevel !== location.pathname) {
+    //   navigate(savedLevel); // Navigate to the saved level if it's different
+    // }
+    setStarCount(getSpecificData("totalCompleted"));
+    storeCurrentLevel("18");
+  }, []);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("path")) || {};
-    const trueCount = Object.values(data).filter(value => value === true).length;
-    setStarCount(trueCount);
-  }, [])
+    // const data = JSON.parse(localStorage.getItem("path")) || {};
+    // const trueCount = Object.values(data).filter(
+    //   (value) => value === true,
+    // ).length;
+    // setStarCount(trueCount);
+  }, []);
 
   const initialDeck = [
     { id: 1, text: "AN maintenance dose" },
@@ -97,7 +107,10 @@ const Level18 = ({ setCompletedLevels }) => {
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
     }
     return shuffledArray;
   };
@@ -245,22 +258,24 @@ const Level18 = ({ setCompletedLevels }) => {
 
   const res = () => {
     // Create an array of selected cards
-    const selectedCards = [selectedCards1.text, selectedCards2.text, selectedCards3.text];
+    const selectedCards = [
+      selectedCards1.text,
+      selectedCards2.text,
+      selectedCards3.text,
+    ];
 
     // Create an array of correct cards
     const correctCards = correctSequence.map((card) => card.text);
 
     // Check if all selected cards exist in the correct sequence (regardless of order)
     const isCorrect = selectedCards.every((selectedCard) =>
-      correctCards.includes(selectedCard)
+      correctCards.includes(selectedCard),
     );
 
     if (isCorrect) {
-      console.log("correct");
       setShowSuccessPopup(true);
-      localStorage.setItem("level9Result", JSON.stringify(selectedCards));
+      // localStorage.setItem("level9Result", JSON.stringify(selectedCards));
     } else {
-      console.log("incorrect");
       setShowWrongPopup(true); // Show wrong popup
     }
   };
@@ -280,9 +295,17 @@ const Level18 = ({ setCompletedLevels }) => {
 
   const handleSuccessClose = () => {
     setShowSuccessPopup(false);
-    handleCompleteLevel9(); // This should now be modified to navigate to Level 13
+    // handleCompleteLevel9(); // This should now be modified to navigate to Level 13
     // You can directly navigate to Level 13 here if that is the desired behavior
-    navigate("/level13", { state: { prev: location.state?.prev + '-' + 17 } });
+    const array = [];
+    array.push(selectedCards1.text);
+    array.push(selectedCards2.text);
+    array.push(selectedCards3.text);
+
+    // console.log(array);
+    // localStorage.setItem("level9Result", JSON.stringify(array));
+    storeLevelResult("18", JSON.stringify(array));
+    navigate("/level13");
   };
 
   const resetGame = () => {
@@ -311,8 +334,7 @@ const Level18 = ({ setCompletedLevels }) => {
     const newCards = [...deck, card];
     setDeck(newCards);
     // setDeck(card);
-
-  }
+  };
   const res2 = (card) => {
     console.log(card);
     setSelectedCards2({});
@@ -320,8 +342,7 @@ const Level18 = ({ setCompletedLevels }) => {
     const newCards = [...deck, card];
     setDeck(newCards);
     // setDeck(card);
-
-  }
+  };
 
   return (
     <div
@@ -335,12 +356,14 @@ const Level18 = ({ setCompletedLevels }) => {
       <div className="absolute top-4 left-4 flex items-center gap-4">
         <div className="flex items-center gap-2">
           <FaStar className="text-yellow-500 text-xl sm:text-2xl" />
-          <span className="text-slate-50 text-sm sm:text-base">{starCount}</span>
+          <span className="text-slate-50 text-sm sm:text-base">
+            {starCount}
+          </span>
         </div>
       </div>
       {/* Icons on the top-right corner */}
       <div className="absolute top-4 right-4 flex items-center gap-4">
-{/*         <div className="flex items-center gap-2 cursor-pointer">
+        {/*         <div className="flex items-center gap-2 cursor-pointer">
           <FaClock className="text-slate-50 text-xl sm:text-2xl" />
 
           <h2 className="text-xl text-blue-600 font-bold">
@@ -355,7 +378,8 @@ const Level18 = ({ setCompletedLevels }) => {
       <div className="flex items-center justify-between w-full my-6">
         {/* <h2 className="text-xl font-bold mx-auto mr-54">Choose card from deck</h2> */}
         <h2 className="text-2xl font-bold text-slate-50 mx-auto mr-50 mb-6">
-          Options available when there is persistent improvement seen after 1 hour:
+          Options available when there is persistent improvement seen after 1
+          hour:
         </h2>
       </div>
 

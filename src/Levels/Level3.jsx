@@ -2,6 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import backgroundImage from "../assets/images/snake11.png";
 import { FaQuestionCircle, FaStar } from "react-icons/fa";
+import {
+  clearGameStorage,
+  initGameStorage,
+  storeLevelResult,
+  storeCurrentLevel,
+  getSpecificData,
+  setMetaData,
+} from "../utils/gameStorage";
 
 const Level3 = ({ setCompletedLevels }) => {
   const navigate = useNavigate();
@@ -29,27 +37,33 @@ const Level3 = ({ setCompletedLevels }) => {
       level3: true,
       level4: true,
     };
-    localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
+    // localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
     const array = [box1.code, box2.code, box3.code, box4.code];
-    localStorage.setItem("level3Result", JSON.stringify(array));
+    // localStorage.setItem("level3Result", JSON.stringify(array));
     const array1 = [box1.text, box2.text, box3.text, box4.text];
-    localStorage.setItem("level3TextResult", JSON.stringify(array1));
+    // localStorage.setItem("level3TextResult", JSON.stringify(array1));
     // Store the selected envenomation type
-    localStorage.setItem("selectedEnvenomationType", selectedEnvenomationType);
-    setCompletedLevels(completedLevels);
-    navigate(nextLevel, { state: { prev: location.state?.prev + '-3' || "1-2-3" } });
+    // localStorage.setItem("selectedEnvenomationType", selectedEnvenomationType);
+    // setCompletedLevels(completedLevels);
+    storeLevelResult("3", JSON.stringify(array1));
+    setMetaData("envenomationType", selectedEnvenomationType);
+    navigate(nextLevel);
   };
 
   useEffect(() => {
-    localStorage.setItem("currentLevel", location.pathname);
-    const savedLevel = localStorage.getItem("currentLevel");
-    if (savedLevel && savedLevel !== location.pathname) {
-      navigate(savedLevel);
-    }
-    const data = JSON.parse(localStorage.getItem("path")) || {};
-    const trueCount = Object.values(data).filter(value => value === true).length;
-    setStarCount(trueCount);
-  }, [location, navigate]);
+    // localStorage.setItem("currentLevel", location.pathname);
+    // const savedLevel = localStorage.getItem("currentLevel");
+    // if (savedLevel && savedLevel !== location.pathname) {
+    //   navigate(savedLevel);
+    // }
+    // const data = JSON.parse(localStorage.getItem("path")) || {};
+    // const trueCount = Object.values(data).filter(
+    //   (value) => value === true,
+    // ).length;
+    // setStarCount(trueCount);
+    setStarCount(getSpecificData("totalCompleted"));
+    storeCurrentLevel("3");
+  }, []);
 
   useEffect(() => {
     if (box1 && box2 && box3 && box4) {
@@ -59,21 +73,76 @@ const Level3 = ({ setCompletedLevels }) => {
 
   const initialHistoryDeck = [
     { id: 1, text: "Painful Progressive Swelling", code: "h", type: "history" },
-    { id: 2, text: "Continuous bleeding from bite site", code: "h", type: "history" },
-    { id: 3, text: "Bleeding from the gums and/or other orifices", code: "h", type: "history" },
-    { id: 4, text: "Local necrosis with rancid smell in a swollen limb with taught and shiny skin and skip lesions", code: "h", type: "history" },
-    { id: 5, text: "Significant painful swelling involving the whole limb and extending onto the trunk", code: "h", type: "history" },
+    {
+      id: 2,
+      text: "Continuous bleeding from bite site",
+      code: "h",
+      type: "history",
+    },
+    {
+      id: 3,
+      text: "Bleeding from the gums and/or other orifices",
+      code: "h",
+      type: "history",
+    },
+    {
+      id: 4,
+      text: "Local necrosis with rancid smell in a swollen limb with taught and shiny skin and skip lesions",
+      code: "h",
+      type: "history",
+    },
+    {
+      id: 5,
+      text: "Significant painful swelling involving the whole limb and extending onto the trunk",
+      code: "h",
+      type: "history",
+    },
     { id: 6, text: "Compartment Syndrome", code: "h", type: "history" },
     { id: 7, text: "Hypotension", code: "h", type: "history" },
-    { id: 8, text: "Petechiae, purpura and ecchymosis", code: "h", type: "history" },
-    { id: 9, text: "Numbness around lips and mouth", code: "n", type: "history" },
-    { id: 10, text: "Paralysis noted early in the morning", code: "n", type: "history" },
-    { id: 11, text: "Dyspnoea/ Dysphonia/ Dysphagia", code: "n", type: "history" },
-    { id: 12, text: "Acute pain abdomen starting from early in the morning", code: "n", type: "history" },
+    {
+      id: 8,
+      text: "Petechiae, purpura and ecchymosis",
+      code: "h",
+      type: "history",
+    },
+    {
+      id: 9,
+      text: "Numbness around lips and mouth",
+      code: "n",
+      type: "history",
+    },
+    {
+      id: 10,
+      text: "Paralysis noted early in the morning",
+      code: "n",
+      type: "history",
+    },
+    {
+      id: 11,
+      text: "Dyspnoea/ Dysphonia/ Dysphagia",
+      code: "n",
+      type: "history",
+    },
+    {
+      id: 12,
+      text: "Acute pain abdomen starting from early in the morning",
+      code: "n",
+      type: "history",
+    },
     { id: 13, text: "Ptosis", code: "n", type: "history" },
-    { id: 14, text: "Inability to swallow and aspiration of pooled secretions", code: "n", type: "history" },
+    {
+      id: 14,
+      text: "Inability to swallow and aspiration of pooled secretions",
+      code: "n",
+      type: "history",
+    },
     { id: 15, text: "Dysarthria", code: "n", type: "history" },
-    { id: 16, text: "Unexplained respiratory distress in children in the presence of ptosis", code: "n", type: "history" },
+    {
+      id: 16,
+      text: "Unexplained respiratory distress in children in the presence of ptosis",
+      code: "n",
+      type: "history",
+    },
   ];
 
   const shuffle = (array) => {
@@ -102,6 +171,8 @@ const Level3 = ({ setCompletedLevels }) => {
     const withinLimits = historyCount <= 4;
 
     if (allSameCode && withinLimits) {
+      console.log("pratanu", codes[0]);
+
       const envenomationType =
         codes[0] === "h"
           ? "Haemotoxic Envenomation"
@@ -120,7 +191,7 @@ const Level3 = ({ setCompletedLevels }) => {
     const isCardSelected = selectedCards.some((c) => c.id === card.id);
     if (isCardSelected) {
       setSelectedCards((prevCards) =>
-        prevCards.filter((c) => c.id !== card.id)
+        prevCards.filter((c) => c.id !== card.id),
       );
       if (card.type === "history") {
         setShuffledHistoryDeck((prevDeck) => [...prevDeck, card]);
@@ -136,7 +207,7 @@ const Level3 = ({ setCompletedLevels }) => {
         setSelectedCards(newCards);
         if (card.type === "history") {
           setShuffledHistoryDeck((prevDeck) =>
-            prevDeck.filter((c) => c.id !== card.id)
+            prevDeck.filter((c) => c.id !== card.id),
           );
           if (newCards.length === 1) setBox1(card);
           else if (newCards.length === 2) setBox2(card);
@@ -158,9 +229,7 @@ const Level3 = ({ setCompletedLevels }) => {
     if (!card) return;
 
     // Remove card from selectedCards
-    setSelectedCards((prev) =>
-      prev.filter((c) => c.id !== card.id)
-    );
+    setSelectedCards((prev) => prev.filter((c) => c.id !== card.id));
 
     // Return card to history deck if applicable
     if (card.type === "history") {
@@ -170,8 +239,6 @@ const Level3 = ({ setCompletedLevels }) => {
     // Clear the clicked box
     clearBox(null);
   };
-
-
 
   const resetGame = () => {
     setBox1({});
@@ -190,12 +257,17 @@ const Level3 = ({ setCompletedLevels }) => {
   return (
     <div
       className="p-4 sm:p-6 flex flex-col items-center relative h-screen w-full overflow-auto"
-      style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover" }}
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+      }}
     >
       <div className="absolute top-4 left-4 flex items-center gap-4">
         <div className="flex items-center gap-2">
           <FaStar className="text-yellow-500 text-xl sm:text-2xl" />
-          <span className="text-slate-50 text-sm sm:text-base">{starCount}</span>
+          <span className="text-slate-50 text-sm sm:text-base">
+            {starCount}
+          </span>
         </div>
       </div>
       <div className="absolute top-4 right-4 flex items-center gap-4">
@@ -205,8 +277,9 @@ const Level3 = ({ setCompletedLevels }) => {
       </div>
 
       <p className="text-2xl font-bold text-slate-50 mx-auto text-center mt-4">
-        Various findings related to Snake bite have been listed below. Select from the following options considering one type of
-        envenomation to go to next level
+        Various findings related to Snake bite have been listed below. Select
+        from the following options considering one type of envenomation to go to
+        next level
       </p>
 
       <div className="w-full h-auto mt-6 flex flex-wrap justify-center gap-4">
@@ -221,22 +294,16 @@ const Level3 = ({ setCompletedLevels }) => {
         ))}
       </div>
 
-      <h2 className="text-center text-slate-50 text-lg font-bold mt-14">Select Correct options</h2>
+      <h2 className="text-center text-slate-50 text-lg font-bold mt-14">
+        Select Correct options
+      </h2>
       <div className="flex flex-wrap justify-center gap-8 mt-4">
         {[box1, box2, box3, box4].map((box, i) => (
           <div
             key={i}
             className="border-2 border-blue-400 w-60 h-28 flex items-center justify-center bg-gray-100 rounded-lg shadow-md text-gray-700 transition-transform transform hover:scale-105"
             onClick={() =>
-              handleBoxClick(
-                box,
-                [
-                  setBox1,
-                  setBox2,
-                  setBox3,
-                  setBox4,
-                ][i]
-              )
+              handleBoxClick(box, [setBox1, setBox2, setBox3, setBox4][i])
             }
           >
             {/* <p className="text-md text-center">{box.text}</p> */}
@@ -262,7 +329,7 @@ const Level3 = ({ setCompletedLevels }) => {
                 handleCompleteLevel3(
                   selectedEnvenomationType === "No Envenomation"
                     ? "/level5"
-                    : "/level4"
+                    : "/level4",
                 )
               }
               className="px-6 py-3 bg-[#3d1a00] text-white rounded-xl hover:bg-[#5a2b00] transition-colors duration-200"

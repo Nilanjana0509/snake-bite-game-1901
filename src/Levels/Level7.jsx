@@ -2,8 +2,14 @@ import React, { useState, useEffect } from "react";
 import CustomAlert from "./CustomAlert";
 import backgroundImage from "../assets/images/snake11.png";
 import { FaClock, FaStar, FaQuestionCircle } from "react-icons/fa";
-
 import { useLocation, useNavigate } from "react-router-dom";
+import {
+  clearGameStorage,
+  initGameStorage,
+  storeLevelResult,
+  storeCurrentLevel,
+  getSpecificData,
+} from "../utils/gameStorage";
 
 const Level7 = ({ setCompletedLevels }) => {
   const navigate = useNavigate();
@@ -16,55 +22,55 @@ const Level7 = ({ setCompletedLevels }) => {
   const [result, SetResult] = useState([]);
   // const [countdown, setCountdown] = useState(1000);
   const [level3Selection, setLevel3Selection] = useState(null);
-  const [starCount, setStarCount] = useState(0)
+  const [starCount, setStarCount] = useState(0);
+  const [finalResult, setFinalResult] = useState();
 
+  // const handleCompleteLevel7 = () => {
+  //   // Mark level 7 as completed
+  //   const completedLevels = {
+  //     level1: true,
+  //     level2: true,
+  //     level3: true,
+  //     level4: true,
+  //     level5: true,
+  //     level6: true,
+  //     level7: true,
+  //     level8: false,
+  //   };
+  //   localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
 
-  const handleCompleteLevel7 = () => {
-    // Mark level 7 as completed
-    const completedLevels = {
-      level1: true,
-      level2: true,
-      level3: true,
-      level4: true,
-      level5: true,
-      level6: true,
-      level7: true,
-      level8: false,
-    };
-    localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
+  //   const array = [];
+  //   array.push(selectedCards.text);
+  //   console.log(array);
+  //   localStorage.setItem("level7Result", JSON.stringify(array));
+  //   setCompletedLevels(completedLevels);
 
-    const array = [];
-    array.push(selectedCards.text);
-    console.log(array);
-    localStorage.setItem("level7Result", JSON.stringify(array));
-    setCompletedLevels(completedLevels);
-
-    // Navigate to level 8
-    // navigate(level);
-  };
+  //   // Navigate to level 8
+  //   // navigate(level);
+  // };
   useEffect(() => {
-
-    if (!location.state?.prev) {
-      alert("You are not allowed to access Level 7!");
-      navigate("/level1"); // Redirect to home or another page
-    }
-
+    // if (!location.state?.prev) {
+    //   alert("You are not allowed to access Level 7!");
+    //   navigate("/level1"); // Redirect to home or another page
+    // }
     // Save the current level path to localStorage
-    localStorage.setItem('currentLevel', location.pathname);
-
+    // localStorage.setItem('currentLevel', location.pathname);
     // Retrieve current level from localStorage on reload
-    const savedLevel = localStorage.getItem('currentLevel');
-    if (savedLevel && savedLevel !== location.pathname) {
-      navigate(savedLevel); // Navigate to the saved level if it's different
-    }
-  }, [location, navigate]);
+    // const savedLevel = localStorage.getItem('currentLevel');
+    // if (savedLevel && savedLevel !== location.pathname) {
+    //   navigate(savedLevel); // Navigate to the saved level if it's different
+    // }
+    setStarCount(getSpecificData("totalCompleted"));
+    storeCurrentLevel("7");
+  }, []);
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("path")) || {};
-    const trueCount = Object.values(data).filter(value => value === true).length;
-    setStarCount(trueCount);
-  }, [])
-
+    // const data = JSON.parse(localStorage.getItem("path")) || {};
+    // const trueCount = Object.values(data).filter(
+    //   (value) => value === true,
+    // ).length;
+    // setStarCount(trueCount);
+  }, []);
 
   const initialDeck = [
     { id: 1, text: "Loading Atropine IV Neostigmine IM or IV" },
@@ -94,7 +100,10 @@ const Level7 = ({ setCompletedLevels }) => {
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
     }
     return shuffledArray;
   };
@@ -113,10 +122,10 @@ const Level7 = ({ setCompletedLevels }) => {
 
   useEffect(() => {
     // Retrieve the selection from Level 2 from localStorage
-    const level3Result = JSON.parse(localStorage.getItem("level3Result")) || [];
-    if (level3Result) {
-      setLevel3Selection(level3Result);
-    }
+    // const level3Result = JSON.parse(localStorage.getItem("level3Result")) || [];
+    // if (level3Result) {
+    //   setLevel3Selection(level3Result);
+    // }
   }, []);
 
   // Function to select a card from the deck
@@ -198,13 +207,14 @@ const Level7 = ({ setCompletedLevels }) => {
 
     // Check if all selected cards exist in the correct sequence (regardless of order)
     const isCorrect = selectCard.every((selectedCard) =>
-      correctCards.includes(selectedCard)
+      correctCards.includes(selectedCard),
     );
 
     if (isCorrect) {
       console.log("correct");
       setShowSuccessPopup(true);
-      localStorage.setItem("level7Result", JSON.stringify(selectCard));
+      setFinalResult(JSON.stringify(selectCard));
+      // localStorage.setItem("level7Result", JSON.stringify(selectCard));
     } else {
       console.log("incorrect");
       setShowWrongPopup(true); // Show wrong popup
@@ -228,13 +238,13 @@ const Level7 = ({ setCompletedLevels }) => {
     setShowSuccessPopup(false);
     // Update completedLevels
 
-    const completedLevels = JSON.parse(localStorage.getItem("completedLevels"));
-    completedLevels.level7 = true; // Mark Level 7 as completed
-    localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
-    setCompletedLevels(completedLevels);
-
+    // const completedLevels = JSON.parse(localStorage.getItem("completedLevels"));
+    // completedLevels.level7 = true; // Mark Level 7 as completed
+    // localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
+    // setCompletedLevels(completedLevels);
+    storeLevelResult("7", finalResult);
     // Navigate to the next level
-    navigate(nextLevel, { state: { prev: location.state?.prev + '-' + 7 } });
+    navigate(nextLevel);
   };
 
   const resetGame = () => {
@@ -272,12 +282,14 @@ const Level7 = ({ setCompletedLevels }) => {
       <div className="absolute top-4 left-4 flex items-center gap-4">
         <div className="flex items-center gap-2">
           <FaStar className="text-yellow-500 text-xl sm:text-2xl" />
-          <span className="text-slate-50 text-sm sm:text-base">{starCount}</span>
+          <span className="text-slate-50 text-sm sm:text-base">
+            {starCount}
+          </span>
         </div>
       </div>
       {/* Icons on the top-right corner */}
       <div className="absolute top-4 right-4 flex items-center gap-4">
-{/*         <div className="flex items-center gap-2 cursor-pointer">
+        {/*         <div className="flex items-center gap-2 cursor-pointer">
           <FaClock className="text-slate-50 text-xl sm:text-2xl" />
 
           <h2 className="text-xl text-blue-600 font-bold">
@@ -291,10 +303,10 @@ const Level7 = ({ setCompletedLevels }) => {
       </div>
       <div className="flex items-center justify-between w-full my-6">
         <h2 className="text-2xl font-bold text-slate-50 mx-auto mb-6">
-          Persistent Neurological signs despite 10 vials of AVS. Options available for management (Neurotoxic Envenomation):
+          Persistent Neurological signs despite 10 vials of AVS. Options
+          available for management (Neurotoxic Envenomation):
         </h2>
       </div>
-
 
       {/* Display all deck cards in a grid format */}
       <div className="flex flex-wrap  gap-2 sm:gap-3 mb-10">
@@ -309,14 +321,15 @@ const Level7 = ({ setCompletedLevels }) => {
         ))}
       </div>
 
-
       {/* Selected card box */}
       <div>
         <h2 className="text-slate-50 text-center text-2xl font-bold mt-14">
           Select the Correct Option
         </h2>
       </div>
-      <div className="mt-8 w-40 h-24 border-2 border-blue-500 flex items-center justify-center bg-gray-100 rounded-lg shadow-md text-gray-700"> {/* Reduced from w-60 h-32 to w-40 h-24 */}
+      <div className="mt-8 w-40 h-24 border-2 border-blue-500 flex items-center justify-center bg-gray-100 rounded-lg shadow-md text-gray-700">
+        {" "}
+        {/* Reduced from w-60 h-32 to w-40 h-24 */}
         <p className="text-md text-center">{selectedCards.text}</p>
       </div>
       {/* <div className="flex w-full mt-10">
@@ -353,9 +366,7 @@ const Level7 = ({ setCompletedLevels }) => {
       {showWrongPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md text-center">
-            <h2 className="text-2xl font-bold text-red-400 mb-4">
-              Incorrect!
-            </h2>
+            <h2 className="text-2xl font-bold text-red-400 mb-4">Incorrect!</h2>
             <p className="mb-6">You have selected the wrong sequence.</p>
             <button
               className="bg-red-400 text-white px-4 py-2 rounded-md"

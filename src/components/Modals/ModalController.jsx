@@ -14,7 +14,7 @@ function ModalController({ onClose }) {
       {activeModal === "SUBSCRIBE" && (
         <SubscribeModal
           onExit={onClose}
-          onSubscribe={() => setActiveModal("AUTH")}
+          onSubscribe={() => setActiveModal("SIGNUP")}
         />
       )}
 
@@ -32,7 +32,7 @@ function ModalController({ onClose }) {
 
       {activeModal === "SIGNUP" && (
         <SignupModal
-          onBack={() => setActiveModal("AUTH")}
+          onBack={() => setActiveModal("SUBSCRIBE")}
           onSuccess={() => setActiveModal("SUCCESS")}
           // setSuccessMessage={setSuccessMessage}
         />
