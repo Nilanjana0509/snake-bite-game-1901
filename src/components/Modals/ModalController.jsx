@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SubscribeModal from "./SubscribeModal";
 import AuthChoiceModal from "./AuthChoiceModal";
-import LoginModal from "./LoginModal";
+import LoginModal from "./LogInModal";
 import SignupModal from "./SignupModal";
 import SuccessModal from "./SuccessModal";
 
