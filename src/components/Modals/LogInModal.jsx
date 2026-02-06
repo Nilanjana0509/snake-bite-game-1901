@@ -8,52 +8,42 @@ const LoginModal = ({ onBack }) => {
   const [errors, setErrors] = useState({});
 
   const handleLogin = async () => {
-    const newErrors = {};
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!emailRegex.test(email)) {
-    newErrors.email = "Please enter a valid email address";
-  }
-
-    if (!password.trim()) {
-      newErrors.password = "Password is required";
-    }
-
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length > 0) return;
-
-    setLoading(true);
-
-    const payload = {
-      user_email: email,
-      user_password: password,
-      deviceId: getDeviceId(),
-    };
-
-    try {
-      const response = await fetch("http://localhost:3030/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Login failed");
-      }
-
-      alert("Login successful");
-      console.log("Device ID used:", payload.deviceId);
-      // onBack();
-    } catch (err) {
-      alert(err.message || "Login failed");
-    } finally {
-      setLoading(false);
-    }
+    //   const newErrors = {};
+    //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    //   if (!email.trim()) {
+    //     newErrors.email = "Email is required";
+    //   } else if (!emailRegex.test(email)) {
+    //     newErrors.email = "Please enter a valid email address";
+    //   }
+    //   if (!password.trim()) {
+    //     newErrors.password = "Password is required";
+    //   }
+    //   setErrors(newErrors);
+    //   if (Object.keys(newErrors).length > 0) return;
+    //   setLoading(true);
+    //   const payload = {
+    //     user_email: email,
+    //     user_password: password,
+    //     deviceId: getDeviceId(),
+    //   };
+    //   try {
+    //     const response = await fetch("http://localhost:3030/api/users/login", {
+    //       method: "POST",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify(payload),
+    //     });
+    //     const data = await response.json();
+    //     if (!response.ok) {
+    //       throw new Error(data.message || "Login failed");
+    //     }
+    //     alert("Login successful");
+    //     console.log("Device ID used:", payload.deviceId);
+    //     // onBack();
+    //   } catch (err) {
+    //     alert(err.message || "Login failed");
+    //   } finally {
+    //     setLoading(false);
+    //   }
   };
 
   return (
