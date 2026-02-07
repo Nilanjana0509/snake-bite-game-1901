@@ -3,6 +3,13 @@ import CustomAlert from "./CustomAlert";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaClock, FaQuestionCircle, FaStar } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
+import {
+  clearGameStorage,
+  initGameStorage,
+  storeLevelResult,
+  storeCurrentLevel,
+  getSpecificData,
+} from "../utils/gameStorage";
 
 const Level12 = ({ setCompletedLevels }) => {
   const location = useLocation();
@@ -45,15 +52,19 @@ const Level12 = ({ setCompletedLevels }) => {
     navigate("/result12", { state: { origin } });
   };
   useEffect(() => {
-    localStorage.setItem('currentLevel', location.pathname);
-    const savedLevel = localStorage.getItem('currentLevel');
-    if (savedLevel && savedLevel !== location.pathname) {
-      navigate(savedLevel);
-    }
-    const data = JSON.parse(localStorage.getItem("path")) || {};
-    const trueCount = Object.values(data).filter(value => value === true).length;
-    setStarCount(trueCount);
-  }, [location, navigate]);
+    // localStorage.setItem("currentLevel", location.pathname);
+    // const savedLevel = localStorage.getItem("currentLevel");
+    // if (savedLevel && savedLevel !== location.pathname) {
+    //   navigate(savedLevel);
+    // }
+    // const data = JSON.parse(localStorage.getItem("path")) || {};
+    // const trueCount = Object.values(data).filter(
+    //   (value) => value === true,
+    // ).length;
+    // setStarCount(trueCount);
+    setStarCount(getSpecificData("totalCompleted"));
+    storeCurrentLevel("12");
+  }, []);
 
   const initialDeck = [
     { id: 1, text: "10 vials AVS" },
@@ -72,7 +83,10 @@ const Level12 = ({ setCompletedLevels }) => {
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
     }
     return shuffledArray;
   };
@@ -108,13 +122,13 @@ const Level12 = ({ setCompletedLevels }) => {
     const selectedCards = [selectedCards1.text, selectedCards2.text];
     const correctCards = correctSequence.map((card) => card.text);
     const isCorrect = selectedCards.every((selectedCard) =>
-      correctCards.includes(selectedCard)
+      correctCards.includes(selectedCard),
     );
 
     if (isCorrect) {
       console.log("correct");
       setShowSuccessPopup(true);
-      localStorage.setItem("level12Result", JSON.stringify(selectedCards));
+      // localStorage.setItem("level12Result", JSON.stringify(selectedCards));
     } else {
       console.log("incorrect");
       setShowWrongPopup(true);
@@ -129,7 +143,20 @@ const Level12 = ({ setCompletedLevels }) => {
 
   const handleSuccessClose = () => {
     setShowSuccessPopup(false);
-    handleCompleteLevel12();
+    // handleCompleteLevel12();
+    const array = [];
+    array.push(selectedCards1.text);
+    array.push(selectedCards2.text);
+    console.log(array);
+    // localStorage.setItem("level12Result", JSON.stringify(array));
+    storeLevelResult("12", JSON.stringify(array));
+    // navigate("/result4");
+    const currentPath = getSpecificData("currentPath");
+    if (currentPath == "1-2-3-4-6-11-12") {
+      navigate("/result3");
+    } else {
+      navigate("/result4");
+    }
   };
 
   const resetGame = () => {
@@ -150,7 +177,9 @@ const Level12 = ({ setCompletedLevels }) => {
       <div className="absolute top-10 left-4 flex items-center gap-4">
         <div className="flex items-center gap-2">
           <FaStar className="text-yellow-500 text-xl sm:text-2xl" />
-          <span className="text-slate-50 text-sm sm:text-base">{starCount}</span>
+          <span className="text-slate-50 text-sm sm:text-base">
+            {starCount}
+          </span>
         </div>
       </div>
       <div className="absolute top-10 right-4 flex items-center gap-4">
@@ -203,10 +232,7 @@ const Level12 = ({ setCompletedLevels }) => {
               onClick={() =>
                 handleBoxClick(
                   card,
-                  [
-                    setSelectedCards1,
-                    setSelectedCards2
-                  ][idx]
+                  [setSelectedCards1, setSelectedCards2][idx],
                 )
               }
             >
@@ -238,9 +264,7 @@ const Level12 = ({ setCompletedLevels }) => {
       {showWrongPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md text-center">
-            <h2 className="text-2xl font-bold text-red-400 mb-4">
-              Incorrect!
-            </h2>
+            <h2 className="text-2xl font-bold text-red-400 mb-4">Incorrect!</h2>
             <p className="mb-6">You have selected the wrong sequence.</p>
             <button
               className="bg-red-400 text-white px-4 py-2 rounded-md"

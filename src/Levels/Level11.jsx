@@ -3,6 +3,13 @@ import CustomAlert from "./CustomAlert";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaClock, FaQuestionCircle, FaStar } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
+import {
+  clearGameStorage,
+  initGameStorage,
+  storeLevelResult,
+  storeCurrentLevel,
+  getSpecificData,
+} from "../utils/gameStorage";
 
 const Level11 = ({ setCompletedLevels }) => {
   const navigate = useNavigate();
@@ -17,42 +24,42 @@ const Level11 = ({ setCompletedLevels }) => {
   const [starCount, setStarCount] = useState(0);
 
   const handleCompleteLevel11 = () => {
-    const completedLevels = {
-      level1: true,
-      level2: true,
-      level3: true,
-      level4: true,
-      level5: true,
-      level6: true,
-      level7: true,
-      level8: true,
-      level9: true,
-      level10: true,
-      level11: true,
-      level12: false,
-    };
-    localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
+    // const completedLevels = {
+    //   level1: true,
+    //   level2: true,
+    //   level3: true,
+    //   level4: true,
+    //   level5: true,
+    //   level6: true,
+    //   level7: true,
+    //   level8: true,
+    //   level9: true,
+    //   level10: true,
+    //   level11: true,
+    //   level12: false,
+    // };
+    // localStorage.setItem("completedLevels", JSON.stringify(completedLevels));
     const array = [];
     array.push(selectedCards1.text);
     array.push(selectedCards2.text);
     array.push(selectedCards3.text);
-
-    console.log(array);
-    localStorage.setItem("level11Result", JSON.stringify(array));
-    setCompletedLevels(completedLevels);
-
+    // localStorage.setItem("level11Result", JSON.stringify(array));
+    // setCompletedLevels(completedLevels);
+    storeLevelResult("11", JSON.stringify(array));
     navigate("/level12");
   };
   useEffect(() => {
-    localStorage.setItem('currentLevel', location.pathname);
-    const savedLevel = localStorage.getItem('currentLevel');
-    if (savedLevel && savedLevel !== location.pathname) {
-      navigate(savedLevel);
-    }
-    const data = JSON.parse(localStorage.getItem("path")) || {};
-    const trueCount = Object.values(data).filter(value => value === true).length;
-    setStarCount(trueCount);
-  }, [location, navigate]);
+    // localStorage.setItem('currentLevel', location.pathname);
+    // const savedLevel = localStorage.getItem('currentLevel');
+    // if (savedLevel && savedLevel !== location.pathname) {
+    //   navigate(savedLevel);
+    // }
+    // const data = JSON.parse(localStorage.getItem("path")) || {};
+    // const trueCount = Object.values(data).filter(value => value === true).length;
+    // setStarCount(trueCount);
+    setStarCount(getSpecificData("totalCompleted"));
+    storeCurrentLevel("11");
+  }, []);
 
   const initialDeck = [
     { id: 1, text: "20 WBCT" },
@@ -74,7 +81,10 @@ const Level11 = ({ setCompletedLevels }) => {
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+      [shuffledArray[i], shuffledArray[j]] = [
+        shuffledArray[j],
+        shuffledArray[i],
+      ];
     }
     return shuffledArray;
   };
@@ -126,13 +136,13 @@ const Level11 = ({ setCompletedLevels }) => {
     const correctCards = correctSequence.map((card) => card.text);
 
     const isCorrect = selectedCards.every((selectedCard) =>
-      correctCards.includes(selectedCard)
+      correctCards.includes(selectedCard),
     );
 
     if (isCorrect) {
       console.log("correct");
       setShowSuccessPopup(true);
-      localStorage.setItem("level11Result", JSON.stringify(selectedCards));
+      // localStorage.setItem("level11Result", JSON.stringify(selectedCards));
     } else {
       console.log("incorrect");
       setShowWrongPopup(true);
@@ -161,12 +171,17 @@ const Level11 = ({ setCompletedLevels }) => {
   return (
     <div
       className="p-4 sm:p-6 flex flex-col items-center relative h-screen w-full overflow-auto"
-      style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover" }}
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+      }}
     >
       <div className="absolute top-10 left-4 flex items-center gap-4">
         <div className="flex items-center gap-2">
           <FaStar className="text-yellow-500 text-xl sm:text-2xl" />
-          <span className="text-slate-50 text-sm sm:text-base">{starCount}</span>
+          <span className="text-slate-50 text-sm sm:text-base">
+            {starCount}
+          </span>
         </div>
       </div>
       <div className="absolute top-10 right-4 flex items-center gap-4">
@@ -211,11 +226,9 @@ const Level11 = ({ setCompletedLevels }) => {
               onClick={() =>
                 handleBoxClick(
                   card,
-                  [
-                    setSelectedCards1,
-                    setSelectedCards2,
-                    setSelectedCards3
-                  ][idx]
+                  [setSelectedCards1, setSelectedCards2, setSelectedCards3][
+                    idx
+                  ],
                 )
               }
             >

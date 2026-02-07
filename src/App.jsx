@@ -25,7 +25,7 @@ import Level16 from "./Levels/Level16";
 import Level17 from "./Levels/Level17";
 import Level18 from "./Levels/Level18";
 import FinalResult16 from "./Levels/Result16";
-import FinalResult5 from "./Levels/Result5";
+// import FinalResult5 from "./Levels/Result5";
 import FinalResult14 from "./Levels/Result14";
 import FinalResult15 from "./Levels/Result15";
 import FinalResult12 from "./Levels/Result12";
@@ -34,6 +34,10 @@ import FinalResult13 from "./Levels/Result13";
 import FinalResult1 from "./Results/Result1";
 import FinalResult7 from "./Results/Result7";
 import FinalResult6 from "./Results/Result6";
+import FinalResult5 from "./Results/Result5";
+import FinalResult4 from "./Results/Result4";
+import FinalResult3 from "./Results/Result3";
+import FinalResult2 from "./Results/Result2";
 
 function App() {
   // Initialize completedLevels fr
@@ -294,12 +298,16 @@ function App() {
         <Route path="/result1" element={<FinalResult1 />} />
         <Route path="/result6" element={<FinalResult6 />} />
         <Route path="/result7" element={<FinalResult7 />} />
-        <Route path="/result16" element={<FinalResult16 />} />
+        <Route path="/result4" element={<FinalResult4 />} />
+        <Route path="/result3" element={<FinalResult3 />} />
+        <Route path="/result2" element={<FinalResult2 />} />
         <Route path="/result5" element={<FinalResult5 />} />
-        <Route path="/result14" element={<FinalResult14 />} />
+        {/* <Route path="/result16" element={<FinalResult16 />} /> */}
+        {/* <Route path="/result5" element={<FinalResult5 />} /> */}
+        {/* <Route path="/result14" element={<FinalResult14 />} />
         <Route path="/result15" element={<FinalResult15 />} />
         <Route path="/result12" element={<FinalResult12 />} />
-        <Route path="/result13" element={<FinalResult13 />} />
+        <Route path="/result13" element={<FinalResult13 />} /> */}
       </Routes>
     </Router>
   );

@@ -130,6 +130,62 @@ export function getResult6Data() {
   };
 }
 
+export function getResult5Data() {
+  const state = readState();
+  if (!state || !state.levelResults) return null;
+  return {
+    level1Result: state.levelResults[1] || [],
+    level2Result: state.levelResults[2] || [],
+    level3Result: state.levelResults[3] || [],
+    level4Result: state.levelResults[4] || [],
+    level6Result: state.levelResults[6] || [],
+    level7Result: state.levelResults[7] || [],
+    level9Result: state.levelResults[9] || [],
+    level13Result: state.levelResults[13] || [],
+  };
+}
+
+export function getResult4Data() {
+  const state = readState();
+  if (!state || !state.levelResults) return null;
+  return {
+    level1Result: state.levelResults[1] || [],
+    level2Result: state.levelResults[2] || [],
+    level3Result: state.levelResults[3] || [],
+    level4Result: state.levelResults[4] || [],
+    level6Result: state.levelResults[6] || [],
+    level12Result: state.levelResults[12] || [],
+  };
+}
+
+export function getResult3Data() {
+  const state = readState();
+  if (!state || !state.levelResults) return null;
+  return {
+    level1Result: state.levelResults[1] || [],
+    level2Result: state.levelResults[2] || [],
+    level3Result: state.levelResults[3] || [],
+    level4Result: state.levelResults[4] || [],
+    level6Result: state.levelResults[6] || [],
+    level11Result: state.levelResults[11] || [],
+    level12Result: state.levelResults[12] || [],
+  };
+}
+
+export function getResult2Data() {
+  const state = readState();
+  if (!state || !state.levelResults) return null;
+  return {
+    level1Result: state.levelResults[1] || [],
+    level2Result: state.levelResults[2] || [],
+    level3Result: state.levelResults[3] || [],
+    level4Result: state.levelResults[4] || [],
+    level6Result: state.levelResults[6] || [],
+    level11Result: state.levelResults[11] || [],
+    level12Result: state.levelResults[15] || [],
+  };
+}
+
 export function setMetaData(level, metaData) {
   const state = readState();
   if (!state) return null;
