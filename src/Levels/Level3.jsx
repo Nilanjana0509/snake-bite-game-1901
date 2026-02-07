@@ -3,8 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import backgroundImage from "../assets/images/snake11.png";
 import { FaQuestionCircle, FaStar } from "react-icons/fa";
 import {
-  clearGameStorage,
-  initGameStorage,
   storeLevelResult,
   storeCurrentLevel,
   getSpecificData,
