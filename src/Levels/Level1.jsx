@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaQuestionCircle, FaStar } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
 import companyImage from "/whatsapp.jpg";
+import company_logo from "/company-logo.jpg";
 import {
   clearGameStorage,
   initGameStorage,
@@ -177,7 +178,7 @@ const Level1 = () => {
     >
       {showImage && (
         <img
-          src={companyImage}
+          src={company_logo}
           alt="Company Logo"
           style={{
             opacity: showImage ? 1 : 0,
