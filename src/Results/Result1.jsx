@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ModalController from "../components/modals/ModalController";
+import ModalController from "../components/Modals/ModalController";
 import {
   getResult1Data,
   completePath,
