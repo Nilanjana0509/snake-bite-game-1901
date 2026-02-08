@@ -19,14 +19,14 @@ const SubscribeModal = ({ onSubscribe, onExit }) => {
         <div className="mt-6 flex gap-3">
           <button
             // onClick={onSubscribe}
-            className="flex-1 rounded-lg bg-amber-900 py-2.5 text-white transition hover:bg-amber-950 "
+            className="flex-1 rounded-lg bg-amber-900 py-2.5 text-white transition hover:bg-amber-950 hidden"
           >
             Subscribe
           </button>
 
           <button
-            onClick={onExit}
-            className="flex-1 rounded-lg bg-gray-300 py-2.5  text-gray-700 transition hover:bg-gray-400"
+            onClick={() => (window.location.href = "https://www.google.com")}
+            className="flex-1 rounded-lg bg-amber-800 py-2.5  text-white hover:bg-amber-900 transition"
           >
             Exit
           </button>
