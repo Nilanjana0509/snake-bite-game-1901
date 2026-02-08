@@ -4,7 +4,8 @@ import AuthChoiceModal from "./AuthChoiceModal";
 import LoginModal from "./LogInModal";
 import SignupModal from "./SignupModal";
 import SuccessModal from "./SuccessModal";
-
+import SubscriptionModal from "./SubscriptionModal";
+import PaymentModal from "./PaymentModal";
 function ModalController({ onClose }) {
   const [activeModal, setActiveModal] = useState("SUBSCRIBE");
   const [successMessage, setSuccessMessage] = useState("");
@@ -14,7 +15,7 @@ function ModalController({ onClose }) {
       {activeModal === "SUBSCRIBE" && (
         <SubscribeModal
           onExit={onClose}
-          onSubscribe={() => setActiveModal("SIGNUP")}
+          onSubscribe={() => setActiveModal("SUBSCRIPTION")}
         />
       )}
 
@@ -32,8 +33,8 @@ function ModalController({ onClose }) {
 
       {activeModal === "SIGNUP" && (
         <SignupModal
-          onBack={() => setActiveModal("SUBSCRIBE")}
-          onSuccess={() => setActiveModal("SUCCESS")}
+          onBack={() => setActiveModal("PAYMENT")}
+          onSuccess={() => setActiveModal("PAYMENT")}
           // setSuccessMessage={setSuccessMessage}
         />
       )}
@@ -42,6 +43,22 @@ function ModalController({ onClose }) {
         <SuccessModal
           onLogin={() => setActiveModal("LOGIN")}
           // successMessage={successMessage}
+        />
+      )}
+
+      {activeModal === "SUBSCRIPTION" && (
+        <SubscriptionModal
+          onSubscribe={() => setActiveModal("SIGNUP")}
+          onExit={() => setActiveModal("TEST")}
+        />
+      )}
+
+      {activeModal === "PAYMENT" && (
+        <PaymentModal
+          upiId="ghoruipratanu-1@oksbi"
+          amount="100"
+          onSubmit={() => setActiveModal("SIGNUP")}
+          onExit={() => setActiveModal("TEST")}
         />
       )}
     </>
