@@ -180,19 +180,12 @@ const Level1 = () => {
         <img
           src={company_logo}
           alt="Company Logo"
-          style={{
-            opacity: showImage ? 1 : 0,
-            transition: "opacity 1s",
-            position: "fixed",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            zIndex: 1000,
-            width: "50%",
-          }}
-          onError={() => console.log("Image failed to load")}
+          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+               z-[1000] transition-opacity duration-1000 
+               w-[90%] md:w-[50%]"
         />
       )}
+
       {showRules && !gameStarted && (
         <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50 p-4">
           <div className="bg-gray-100 p-6 rounded-lg shadow-lg text-center border-4 border-gray-300 overflow-y-auto max-h-[70vh]">

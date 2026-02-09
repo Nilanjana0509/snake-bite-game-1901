@@ -99,7 +99,9 @@ function FinalResult1() {
                 Home
               </button>
               <button
-                onClick={handleExitClick}
+                onClick={() =>
+                  (window.location.href = "https://www.google.com")
+                }
                 className="bg-amber-800 text-white px-4 py-2 mt-6 rounded-md hover:bg-amber-900 transition"
               >
                 Exit
