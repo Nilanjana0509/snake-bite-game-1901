@@ -182,7 +182,7 @@ const Level1 = () => {
           alt="Company Logo"
           className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
                z-[1000] transition-opacity duration-1000 
-               w-[90%] md:w-[50%]"
+               w-[90%] md:w-[40%]"
         />
       )}
 
