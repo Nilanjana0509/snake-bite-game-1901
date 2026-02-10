@@ -41,6 +41,7 @@ import FinalResult2 from "./Results/Result2";
 
 import Admin_Login from "./admin/Admin_Login";
 import Admin_Dashboard from "./admin/Admin_Dashboard";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   // Initialize completedLevels fr
@@ -58,6 +59,7 @@ function App() {
 
   return (
     <Router>
+      <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         {/* <Route
           path="/level1"

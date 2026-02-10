@@ -20,38 +20,37 @@ const SignupModal = ({ onBack, onSuccess }) => {
   };
 
   const validate = () => {
-  const newErrors = {};
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const mobileRegex = /^[0-9]{10,15}$/;
+    const newErrors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const mobileRegex = /^[0-9]{10,15}$/;
 
-  if (!formData.name.trim()) {
-    newErrors.name = "Name is required";
-  }
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
 
-  if (!formData.email.trim()) {
-    newErrors.email = "Email is required";
-  } else if (!emailRegex.test(formData.email)) {
-    newErrors.email = "Please enter a valid email address";
-  }
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
 
-  if (!formData.password.trim()) {
-    newErrors.password = "Password is required";
-  }
+    if (!formData.password.trim()) {
+      newErrors.password = "Password is required";
+    }
 
-  if (!formData.number.trim()) {
-    newErrors.number = "Mobile number is required";
-  } else if (!mobileRegex.test(formData.number)) {
-    newErrors.number = "Please enter a valid mobile number";
-  }
+    if (!formData.number.trim()) {
+      newErrors.number = "Mobile number is required";
+    } else if (!mobileRegex.test(formData.number)) {
+      newErrors.number = "Please enter a valid mobile number";
+    }
 
-  if (!formData.address.trim()) {
-    newErrors.address = "Address is required";
-  }
+    if (!formData.address.trim()) {
+      newErrors.address = "Address is required";
+    }
 
-  setErrors(newErrors);
-  return Object.keys(newErrors).length === 0;
-};
-
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async () => {
     if (!validate()) return;
@@ -79,7 +78,7 @@ const SignupModal = ({ onBack, onSuccess }) => {
         throw new Error(data.message || "Signup failed");
       }
 
-      toast.success("Sign Up Successful! 🎉")
+      toast.success("Sign Up Successful! 🎉");
 
       setFormData({
         name: "",
@@ -91,23 +90,22 @@ const SignupModal = ({ onBack, onSuccess }) => {
         institution: "",
       });
       setErrors({});
-      console.log(data.message);
-      onSuccess();
+      console.log(data.user.id);
+      onSuccess(data.user.id);
     } catch (err) {
       toast.error(err.message || "Signup failed");
     }
   };
 
   const inputStyle = (field) =>
-    `w-full rounded-lg border px-3 py-2 focus:ring-1 ${errors[field]
-      ? "border-red-500 focus:ring-red-500"
-      : "focus:border-amber-900 focus:ring-amber-900"
+    `w-full rounded-lg border px-3 py-2 focus:ring-1 ${
+      errors[field]
+        ? "border-red-500 focus:ring-red-500"
+        : "focus:border-amber-900 focus:ring-amber-900"
     }`;
 
   return (
     <>
-      <Toaster position="top-right" />
-
       <div
         className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
         onClick={onBack}

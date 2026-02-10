@@ -1,20 +1,23 @@
 import React, { useMemo, useState } from "react";
+import { BANKDETAILS } from "../../utils/globalData";
 
-const PaymentModal = ({ upiId, amount, onSubmit, onExit }) => {
+const PaymentModal = ({ plan, userId, onSubmit, onExit }) => {
   const [txnId, setTxnId] = useState("");
+  console.log(plan);
 
   // Generate UPI QR dynamically
   const qrUrl = useMemo(() => {
-    const params = new URLSearchParams({
-      pa: upiId, // Payee UPI ID
-      pn: "Subscription", // Payee name
-      am: amount, // Amount
-      cu: "INR",
-    });
+    if (!plan?.price) return "";
 
-    // Using Google Chart API for QR generation
-    return `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=upi://pay?${params.toString()}`;
-  }, [upiId, amount]);
+    const upiString =
+      `upi://pay?pa=${BANKDETAILS.upiId}` +
+      `&pn=${encodeURIComponent(BANKDETAILS.payeeName)}` +
+      `&am=${encodeURIComponent(String(plan.price))}` +
+      `&cu=INR` +
+      `&tn=${encodeURIComponent(`Subscription ${plan.title}`)}`;
+
+    return `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(upiString)}`;
+  }, [plan?.price]);
 
   const handleSubmit = () => {
     if (!txnId.trim()) {
@@ -52,7 +55,7 @@ const PaymentModal = ({ upiId, amount, onSubmit, onExit }) => {
 
         {/* UPI Info */}
         <p className="mt-2 text-center text-xs text-amber-800">
-          UPI ID: <span className="font-medium">{upiId}</span>
+          UPI ID: <span className="font-medium">{BANKDETAILS.upiId}</span>
         </p>
 
         {/* Transaction ID Input */}

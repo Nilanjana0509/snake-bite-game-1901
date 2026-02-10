@@ -1,12 +1,7 @@
 import React from "react";
+import { PLANS } from "../../utils/globalData";
 
 const SubscriptionModal = ({ onSubscribe, onExit }) => {
-  const plans = [
-    { id: 1, title: "1 Month", price: "₹149" },
-    { id: 2, title: "6 Months", price: "₹749" },
-    { id: 3, title: "1 Year", price: "₹1499" },
-  ];
-
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
@@ -26,9 +21,9 @@ const SubscriptionModal = ({ onSubscribe, onExit }) => {
 
         {/* Plans */}
         <div className="mt-5 space-y-3">
-          {plans.map((plan) => (
+          {PLANS.map((plan) => (
             <div
-              onClick={onSubscribe}
+              onClick={() => onSubscribe(plan)}
               key={plan.id}
               className="flex items-center justify-between rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 hover:border-amber-400 transition cursor-pointer"
             >
@@ -46,12 +41,12 @@ const SubscriptionModal = ({ onSubscribe, onExit }) => {
 
         {/* Actions */}
         <div className="mt-6 flex gap-3">
-          <button
+          {/* <button
             onClick={onSubscribe}
             className="flex-1 rounded-lg bg-amber-900 py-2.5 text-white transition hover:bg-amber-950"
           >
             Subscribe
-          </button>
+          </button> */}
 
           <button
             onClick={onExit}
