@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ModalController from "../components/Modals/ModalController";
+import { checkUser } from "../apis/users_apis";
+
 import {
   getResult4Data,
   completePath,
@@ -43,7 +45,7 @@ function FinalResult4() {
     const startCount = getSpecificData("totalCompleted");
     if (startCount == 8) {
       setShowCompletionPopup(true);
-    } else if (startCount == 1) {
+    } else if (startCount == 1 && !checkUser()) {
       setShowModal(true);
     } else {
       if (isPathCompleted("1-2-5")) {

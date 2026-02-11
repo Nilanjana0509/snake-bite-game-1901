@@ -5,6 +5,7 @@ import backgroundImage from "../assets/images/snake11.png";
 import companyImage from "/whatsapp.jpg";
 import company_logo from "/company-logo.jpg";
 import LoginModal from "../components/modals/LogInModal";
+import { checkUser } from "../apis/users_apis";
 import {
   clearGameStorage,
   initGameStorage,
@@ -44,11 +45,22 @@ const Level1 = () => {
     const timer = setTimeout(() => {
       setShowImage(false);
 
-      if (accessKey) {
-        setShowLoginModal(true);
-      } else {
-        setShowRules(true);
-      }
+      const verifyUser = async () => {
+        if (!accessKey) {
+          setShowRules(true);
+          return;
+        }
+
+        const userCheck = await checkUser();
+
+        if (!userCheck) {
+          setShowLoginModal(true);
+        } else {
+          setShowRules(true);
+        }
+      };
+
+      verifyUser();
     }, 4000);
 
     return () => clearTimeout(timer);
@@ -219,7 +231,14 @@ const Level1 = () => {
           onError={() => console.log("Image failed to load")}
         />
       )}
-      {showLoginModal && <LoginModal onBack={() => setShowLoginModal(false)} />}
+      {showLoginModal && (
+        <LoginModal
+          onBack={() => {
+            setShowLoginModal(false);
+            setShowRules(true);
+          }}
+        />
+      )}
 
       {showRules && !gameStarted && (
         <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50 p-4">
