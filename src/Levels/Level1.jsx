@@ -4,6 +4,7 @@ import { FaQuestionCircle, FaStar } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
 import companyImage from "/whatsapp.jpg";
 import company_logo from "/company-logo.jpg";
+import LoginModal from "../components/modals/LogInModal";
 import {
   clearGameStorage,
   initGameStorage,
@@ -26,16 +27,41 @@ const Level1 = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [finalResult, setFinalResult] = useState();
   const [starCount, setStarCount] = useState(0);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [accessKey, setAccessKey] = useState(null);
+
+  // useEffect(() => {
+  //   console.log("Image display started");
+  //   const timer = setTimeout(() => {
+  //     console.log("Image fading out after 04 seconds");
+  //     setShowImage(false);
+  //     setShowRules(true);
+  //   }, 4000);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   useEffect(() => {
-    console.log("Image display started");
     const timer = setTimeout(() => {
-      console.log("Image fading out after 04 seconds");
       setShowImage(false);
-      setShowRules(true);
+
+      if (accessKey) {
+        setShowLoginModal(true);
+      } else {
+        setShowRules(true);
+      }
     }, 4000);
+
     return () => clearTimeout(timer);
-  }, []);
+  }, [accessKey]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const key = params.get("key");
+
+    if (key) {
+      setAccessKey(key);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     // const data = JSON.parse(localStorage.getItem("path")) || {};
@@ -193,6 +219,8 @@ const Level1 = () => {
           onError={() => console.log("Image failed to load")}
         />
       )}
+      {showLoginModal && <LoginModal onBack={() => setShowLoginModal(false)} />}
+
       {showRules && !gameStarted && (
         <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50 p-4">
           <div className="bg-gray-100 p-6 rounded-lg shadow-lg text-center border-4 border-gray-300 overflow-y-auto max-h-[70vh]">

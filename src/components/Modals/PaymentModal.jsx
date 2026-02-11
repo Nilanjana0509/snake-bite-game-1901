@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { BANKDETAILS } from "../../utils/globalData";
+import toast from "react-hot-toast";
 
 const PaymentModal = ({ plan, userId, onSubmit, onExit }) => {
   const [txnId, setTxnId] = useState("");
@@ -24,7 +25,50 @@ const PaymentModal = ({ plan, userId, onSubmit, onExit }) => {
       alert("Please enter transaction ID");
       return;
     }
-    onSubmit(txnId);
+    saveSubscriptionPayment(txnId.trim());
+  };
+
+  const saveSubscriptionPayment = async (transactionId) => {
+    try {
+      const response = await fetch(
+        "http://localhost:3030/api/payment/subscription",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId,
+            amount: plan.price,
+            duration: plan.title,
+            subscriptionAt: Date.now().toString(),
+            transactionId,
+          }),
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || "Payment submission failed");
+        return;
+      }
+
+      // alert("Payment submitted successfully. Waiting for verification ✅");
+      toast.success(
+        "Payment submitted successfully. Waiting for verification ✅",
+        {
+          autoClose: 4000,
+        },
+      );
+
+      setTimeout(() => {
+        onExit();
+      }, 2000);
+    } catch (error) {
+      console.error("Payment API error:", error);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
