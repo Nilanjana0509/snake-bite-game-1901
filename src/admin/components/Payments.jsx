@@ -12,7 +12,7 @@ function Payments() {
   const fetchPayments = async () => {
     try {
       const res = await fetch(
-        "http://localhost:3030/api/payment/allSubscriptionData",
+        `${import.meta.env.VITE_API_URL}/payment/allSubscriptionData`,
       );
       const data = await res.json();
 
@@ -31,7 +31,7 @@ function Payments() {
   const updatePaymentStatus = async (id, status) => {
     try {
       const res = await fetch(
-        `http://localhost:3030/api/payment/updateSubscriptionData/${id}`,
+        `${import.meta.env.VITE_API_URL}/payment/updateSubscriptionData/${id}`,
         {
           method: "PATCH",
           headers: {

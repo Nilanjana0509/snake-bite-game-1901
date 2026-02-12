@@ -66,11 +66,14 @@ const SignupModal = ({ onBack, onSuccess }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:3030/api/users/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/users/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        },
+      );
 
       const data = await response.json();
 

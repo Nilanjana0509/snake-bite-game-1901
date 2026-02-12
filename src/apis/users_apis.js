@@ -5,7 +5,7 @@ export const checkUser = async () => {
     return false;
   }
 
-  const response = await fetch("http://localhost:3030/api/users/check", {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/users/check`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

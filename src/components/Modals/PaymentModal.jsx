@@ -31,7 +31,7 @@ const PaymentModal = ({ plan, userId, onSubmit, onExit }) => {
   const saveSubscriptionPayment = async (transactionId) => {
     try {
       const response = await fetch(
-        "http://localhost:3030/api/payment/subscription",
+        `${import.meta.env.VITE_API_URL}/payment/subscription`,
         {
           method: "POST",
           headers: {
