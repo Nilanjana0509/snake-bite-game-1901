@@ -39,6 +39,10 @@ import FinalResult4 from "./Results/Result4";
 import FinalResult3 from "./Results/Result3";
 import FinalResult2 from "./Results/Result2";
 
+import Admin_Login from "./admin/Admin_Login";
+import Admin_Dashboard from "./admin/Admin_Dashboard";
+import { Toaster } from "react-hot-toast";
+
 function App() {
   // Initialize completedLevels fr
   const [completedLevels, setCompletedLevels] = useState(() => {
@@ -55,6 +59,7 @@ function App() {
 
   return (
     <Router>
+      <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         {/* <Route
           path="/level1"
@@ -296,18 +301,22 @@ function App() {
 
         {/* Route for the final result */}
         <Route path="/result1" element={<FinalResult1 />} />
-        <Route path="/result6" element={<FinalResult6 />} />
-        <Route path="/result7" element={<FinalResult7 />} />
-        <Route path="/result4" element={<FinalResult4 />} />
-        <Route path="/result3" element={<FinalResult3 />} />
         <Route path="/result2" element={<FinalResult2 />} />
+        <Route path="/result3" element={<FinalResult3 />} />
+        <Route path="/result4" element={<FinalResult4 />} />
+        <Route path="/result6" element={<FinalResult6 />} />
         <Route path="/result5" element={<FinalResult5 />} />
+        <Route path="/result7" element={<FinalResult7 />} />
         {/* <Route path="/result16" element={<FinalResult16 />} /> */}
         {/* <Route path="/result5" element={<FinalResult5 />} /> */}
         {/* <Route path="/result14" element={<FinalResult14 />} />
         <Route path="/result15" element={<FinalResult15 />} />
         <Route path="/result12" element={<FinalResult12 />} />
         <Route path="/result13" element={<FinalResult13 />} /> */}
+
+        {/* admin pages */}
+        <Route path="/admin-login" element={<Admin_Login />} />
+        <Route path="/admin-dashboard" element={<Admin_Dashboard />} />
       </Routes>
     </Router>
   );

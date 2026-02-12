@@ -4,6 +4,8 @@ import { FaQuestionCircle, FaStar } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
 import companyImage from "/whatsapp.jpg";
 import company_logo from "/company-logo.jpg";
+import LoginModal from "../components/modals/LogInModal";
+import { checkUser } from "../apis/users_apis";
 import {
   clearGameStorage,
   initGameStorage,
@@ -26,16 +28,52 @@ const Level1 = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [finalResult, setFinalResult] = useState();
   const [starCount, setStarCount] = useState(0);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [accessKey, setAccessKey] = useState(null);
+
+  // useEffect(() => {
+  //   console.log("Image display started");
+  //   const timer = setTimeout(() => {
+  //     console.log("Image fading out after 04 seconds");
+  //     setShowImage(false);
+  //     setShowRules(true);
+  //   }, 4000);
+  //   return () => clearTimeout(timer);
+  // }, []);
 
   useEffect(() => {
-    console.log("Image display started");
     const timer = setTimeout(() => {
-      console.log("Image fading out after 04 seconds");
       setShowImage(false);
-      setShowRules(true);
+
+      const verifyUser = async () => {
+        if (!accessKey) {
+          setShowRules(true);
+          return;
+        }
+
+        const userCheck = await checkUser();
+
+        if (!userCheck) {
+          setShowLoginModal(true);
+        } else {
+          setShowRules(true);
+        }
+      };
+
+      verifyUser();
     }, 4000);
+
     return () => clearTimeout(timer);
-  }, []);
+  }, [accessKey]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const key = params.get("key");
+
+    if (key) {
+      setAccessKey(key);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     // const data = JSON.parse(localStorage.getItem("path")) || {};
@@ -180,9 +218,26 @@ const Level1 = () => {
         <img
           src={company_logo}
           alt="Company Logo"
-          className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-               z-[1000] transition-opacity duration-1000 
-               w-[90%] md:w-[40%]"
+          style={{
+            opacity: showImage ? 1 : 0,
+            transition: "opacity 1s",
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 1000,
+            width: "50%",
+          }}
+          onError={() => console.log("Image failed to load")}
+        />
+      )}
+
+      {showLoginModal && (
+        <LoginModal
+          onBack={() => {
+            setShowLoginModal(false);
+            setShowRules(true);
+          }}
         />
       )}
 

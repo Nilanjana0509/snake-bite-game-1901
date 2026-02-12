@@ -4,17 +4,19 @@ import AuthChoiceModal from "./AuthChoiceModal";
 import LoginModal from "./LogInModal";
 import SignupModal from "./SignupModal";
 import SuccessModal from "./SuccessModal";
-
+import SubscriptionModal from "./SubscriptionModal";
+import PaymentModal from "./PaymentModal";
 function ModalController({ onClose }) {
   const [activeModal, setActiveModal] = useState("SUBSCRIBE");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [plans, setPlans] = useState("");
+  const [userId, setUserId] = useState("");
 
   return (
     <>
       {activeModal === "SUBSCRIBE" && (
         <SubscribeModal
           onExit={onClose}
-          onSubscribe={() => setActiveModal("SIGNUP")}
+          onSubscribe={() => setActiveModal("SUBSCRIPTION")}
         />
       )}
 
@@ -32,9 +34,10 @@ function ModalController({ onClose }) {
 
       {activeModal === "SIGNUP" && (
         <SignupModal
-          onBack={() => setActiveModal("SUBSCRIBE")}
-          onSuccess={() => setActiveModal("SUCCESS")}
-          // setSuccessMessage={setSuccessMessage}
+          onBack={() => setActiveModal("SUBSCRIPTION")}
+          onSuccess={(userId) => {
+            (setUserId(userId), setActiveModal("PAYMENT"));
+          }}
         />
       )}
 
@@ -42,6 +45,25 @@ function ModalController({ onClose }) {
         <SuccessModal
           onLogin={() => setActiveModal("LOGIN")}
           // successMessage={successMessage}
+        />
+      )}
+
+      {activeModal === "SUBSCRIPTION" && (
+        <SubscriptionModal
+          onSubscribe={(plan) => {
+            setPlans(plan);
+            setActiveModal("SIGNUP");
+          }}
+          onExit={() => (window.location.href = "https://www.google.com")}
+        />
+      )}
+
+      {activeModal === "PAYMENT" && (
+        <PaymentModal
+          plan={plans}
+          userId={userId}
+          onSubmit={() => setActiveModal("SIGNUP")}
+          onExit={() => (window.location.href = "https://www.google.com")}
         />
       )}
     </>
