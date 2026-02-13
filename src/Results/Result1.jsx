@@ -33,12 +33,17 @@ function FinalResult1() {
     setShowStarPopup(false);
   };
 
-  const handleHomeClick = () => {
+  const handleHomeClick = async () => {
     const startCount = getSpecificData("totalCompleted");
     if (startCount == 8) {
       setShowCompletionPopup(true);
-    } else if (startCount == 1 && !checkUser()) {
-      setShowModal(true);
+    } else if (startCount == 1) {
+      const userCheck = await checkUser();
+      if (!userCheck) {
+        setShowModal(true);
+      } else {
+        navigate("/level2");
+      }
     } else {
       navigate("/level2");
     }
