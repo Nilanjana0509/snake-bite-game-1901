@@ -36,7 +36,7 @@ function Users() {
   return (
     <div className="bg-white rounded-xl shadow p-6">
       <h2 className="mb-4 text-xl font-semibold text-gray-800">
-        Registered Users
+        Registered buyers
       </h2>
 
       <div className="overflow-x-auto overflow-y-auto max-h-[550px] rounded-lg">
