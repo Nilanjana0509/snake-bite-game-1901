@@ -4,7 +4,7 @@ import {
   Route,
   Navigate,
   useLocation,
-} from "react-router-dom"; // Use Navigate instead of Redirect
+} from "react-router-dom"; // Use Navigate instead of Redirec
 import { useState } from "react";
 import Level1 from "./Levels/Level1";
 import Level2 from "./Levels/Level2"; // Assuming you have these components
