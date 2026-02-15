@@ -42,10 +42,10 @@ function FinalResult1() {
       if (!userCheck) {
         setShowModal(true);
       } else {
-        navigate("/level2");
+        navigate("/level2?key=1");
       }
     } else {
-      navigate("/level2");
+      navigate("/level2?key=1");
     }
   };
   const handleExitClick = () => {

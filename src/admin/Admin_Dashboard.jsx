@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Payments from "./components/Payments";
+import Users from "./components/Users";
 
 function Admin_Dashboard() {
   const [activeMenu, setActiveMenu] = useState("payments");
@@ -40,6 +41,7 @@ function Admin_Dashboard() {
           </div>
 
           {activeMenu === "payments" && <Payments />}
+          {activeMenu === "users" && <Users />}
 
           {activeMenu === "dashboard" && (
             <div className="rounded-xl bg-white p-6 shadow">

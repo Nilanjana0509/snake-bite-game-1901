@@ -3,12 +3,14 @@ import CustomAlert from "./CustomAlert"; // Importing the CustomAlert component
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaClock, FaStar, FaQuestionCircle } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
+import toast from "react-hot-toast";
 import {
   clearGameStorage,
   initGameStorage,
   storeLevelResult,
   storeCurrentLevel,
   getSpecificData,
+  isPathCompleted,
 } from "../utils/gameStorage";
 
 const Level9 = ({ setCompletedLevels }) => {
@@ -67,7 +69,15 @@ const Level9 = ({ setCompletedLevels }) => {
     // }
     setStarCount(getSpecificData("totalCompleted"));
     storeCurrentLevel("9");
+    checkAuthentication();
   }, []);
+
+  const checkAuthentication = () => {
+    if (isPathCompleted("1-2-3-4-6-7-9-13")) {
+      toast.error("You have completed this path.");
+      navigate("/level2?key=1");
+    }
+  };
 
   useEffect(() => {
     // const data = JSON.parse(localStorage.getItem("path")) || {};

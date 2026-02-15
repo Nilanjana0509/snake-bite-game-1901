@@ -3,12 +3,14 @@ import CustomAlert from "./CustomAlert";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaClock, FaQuestionCircle, FaStar } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
+import toast from "react-hot-toast";
 import {
   clearGameStorage,
   initGameStorage,
   storeLevelResult,
   storeCurrentLevel,
   getSpecificData,
+  isPathCompleted,
 } from "../utils/gameStorage";
 
 const Level12 = ({ setCompletedLevels }) => {
@@ -64,7 +66,15 @@ const Level12 = ({ setCompletedLevels }) => {
     // setStarCount(trueCount);
     setStarCount(getSpecificData("totalCompleted"));
     storeCurrentLevel("12");
+    checkAuthentication();
   }, []);
+
+  const checkAuthentication = () => {
+    if (isPathCompleted("1-2-3-4-6-11-12") && isPathCompleted("1-2-3-4-6-12")) {
+      toast.error("You have completed this path.");
+      navigate("/level2?key=1");
+    }
+  };
 
   const initialDeck = [
     { id: 1, text: "10 vials AVS" },

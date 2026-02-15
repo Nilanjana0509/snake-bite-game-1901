@@ -3,12 +3,14 @@ import CustomAlert from "./CustomAlert";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaClock, FaQuestionCircle, FaStar } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
+import toast from "react-hot-toast";
 import {
   clearGameStorage,
   initGameStorage,
   storeLevelResult,
   storeCurrentLevel,
   getSpecificData,
+  isPathCompleted,
 } from "../utils/gameStorage";
 
 const Level15 = ({ setCompletedLevels }) => {
@@ -63,7 +65,15 @@ const Level15 = ({ setCompletedLevels }) => {
     // setStarCount(trueCount);
     setStarCount(getSpecificData("totalCompleted"));
     storeCurrentLevel("15");
+    checkAuthentication();
   }, []);
+
+  const checkAuthentication = () => {
+    if (isPathCompleted("1-2-3-4-6-11-15")) {
+      toast.error("You have completed this path.");
+      navigate("/level2?key=1");
+    }
+  };
 
   const initialDeck = [
     { id: 1, text: "Discharge after 24 hours" },

@@ -20,7 +20,7 @@ export const PLANS = [
 ];
 
 export const BANKDETAILS = {
-  upiId: "ghoruipratanu-1@oksbi",
+  upiId: "chaudhuri.nil@okicici",
   payeeName: "Subscription",
   paymentMode: "INR",
 };

@@ -10,6 +10,7 @@ function writeState(state) {
 }
 
 export function clearGameStorage() {
+  localStorage.removeItem("accessToken");
   localStorage.removeItem(STORAGE_KEY);
 }
 
@@ -37,7 +38,12 @@ export function storeLevelResult(level, resultArray) {
   if (!state.currentPath) {
     state.currentPath = String(level);
   } else {
-    state.currentPath = `${state.currentPath}-${level}`;
+    const levels = state.currentPath.split("-");
+
+    // Check if level already exists
+    if (!levels.includes(String(level))) {
+      state.currentPath = `${state.currentPath}-${level}`;
+    }
   }
 
   writeState(state);
@@ -84,6 +90,13 @@ export function completePath() {
     state.completedPaths.push(state.currentPath);
     state.totalCompleted += 1;
   }
+  writeState(state);
+}
+
+export function modifyCurrentPath(modifiedString) {
+  const state = readState();
+  if (!state || !state.currentPath) return;
+  state.currentPath = modifiedString;
   writeState(state);
 }
 

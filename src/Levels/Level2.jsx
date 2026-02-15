@@ -8,6 +8,7 @@ import {
   storeLevelResult,
   storeCurrentLevel,
   getSpecificData,
+  modifyCurrentPath,
 } from "../utils/gameStorage";
 
 const Level2 = () => {
@@ -94,6 +95,15 @@ const Level2 = () => {
     setStarCount(getSpecificData("totalCompleted"));
     storeCurrentLevel("2");
   }, []);
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const key = params.get("key");
+
+    if (key) {
+      modifyCurrentPath("1-2");
+      setShowSuccessPopup(true);
+    }
+  }, [location.search]);
 
   const selectCard = (card, boxSetter) => {
     if (!card || !card.text) return;

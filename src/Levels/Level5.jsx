@@ -3,11 +3,14 @@ import CustomAlert from "./CustomAlert"; // Importing the CustomAlert component
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaClock, FaQuestionCircle, FaStar } from "react-icons/fa";
 import backgroundImage from "../assets/images/snake11.png";
+import toast from "react-hot-toast";
 import {
   clearGameStorage,
   initGameStorage,
   storeLevelResult,
   storeCurrentLevel,
+  isPathCompleted,
+  getSpecificData,
 } from "../utils/gameStorage";
 
 const Level5 = ({ setCompletedLevels }) => {
@@ -63,8 +66,17 @@ const Level5 = ({ setCompletedLevels }) => {
   // }, [location, navigate]);
 
   useEffect(() => {
+    setStarCount(getSpecificData("totalCompleted"));
     storeCurrentLevel("5");
+    checkAuthentication();
   }, []);
+
+  const checkAuthentication = () => {
+    if (isPathCompleted("1-2-5")) {
+      toast.error("You have completed this path.");
+      navigate("/level2?key=1");
+    }
+  };
 
   const initialDeck = [
     { id: 1, text: "Reassurance" },

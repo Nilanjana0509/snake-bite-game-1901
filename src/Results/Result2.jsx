@@ -48,11 +48,12 @@ function FinalResult2() {
     } else if (startCount == 1 && !checkUser()) {
       setShowModal(true);
     } else {
-      if (isPathCompleted("1-2-5")) {
-        navigate("/level3");
-      } else {
-        navigate("/level2");
-      }
+      // if (isPathCompleted("1-2-5")) {
+      //   navigate("/level3");
+      // } else {
+      //   navigate("/level2");
+      // }
+      navigate("/level2?key=1");
     }
   };
   const handleExitClick = () => {

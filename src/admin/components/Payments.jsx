@@ -88,6 +88,7 @@ function Payments() {
               <th className="px-4 py-3">Amount</th>
               <th className="px-4 py-3">Duration</th>
               <th className="px-4 py-3">Transaction ID</th>
+              <th className="px-4 py-3">Subscription Count</th>
               <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3 text-center">Action</th>
             </tr>
@@ -109,7 +110,7 @@ function Payments() {
                   <td className="px-4 py-3 font-mono text-xs">
                     {item.transactionId}
                   </td>
-
+                  <td className="px-4 py-3">{item.subscriptionCount}</td>
                   {/* Status */}
                   <td className="px-4 py-3">
                     <span

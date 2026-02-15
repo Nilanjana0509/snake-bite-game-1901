@@ -16,7 +16,8 @@ const SubscriptionModal = ({ onSubscribe, onExit }) => {
           Choose Your Subscription 💳
         </h2>
         <p className="mt-2 text-sm text-amber-900">
-          Select a plan to continue using the software
+          Select a plan to continue using the software, to select click on the
+          plan of your choice
         </p>
 
         {/* Plans */}
