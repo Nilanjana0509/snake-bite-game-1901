@@ -17,12 +17,12 @@ const SubscribeModal = ({ onSubscribe, onExit }) => {
         </p>
 
         <div className="mt-6 flex gap-3">
-          <button
+          {/* <button
             onClick={onSubscribe}
             className="flex-1 rounded-lg bg-amber-900 py-2.5 text-white transition hover:bg-amber-950"
           >
             Subscribe
-          </button>
+          </button> */}
 
           <button
             onClick={() => (window.location.href = "https://www.google.com")}

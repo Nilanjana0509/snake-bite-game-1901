@@ -51,29 +51,28 @@ const Level1 = () => {
           return;
         }
 
-        const userCheck = await checkUser();
-
-        if (!userCheck) {
-          setShowLoginModal(true);
-        } else {
-          setShowRules(true);
-        }
+        // const userCheck = await checkUser();
+        setShowRules(true);
+        // if (!userCheck) {
+        //   setShowLoginModal(true);
+        // } else {
+        // }
       };
 
       verifyUser();
     }, 4000);
 
     return () => clearTimeout(timer);
-  }, [accessKey]);
+  }, []);
 
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const key = params.get("key");
+  // useEffect(() => {
+  //   const params = new URLSearchParams(location.search);
+  //   const key = params.get("key");
 
-    if (key) {
-      setAccessKey(key);
-    }
-  }, [location.search]);
+  //   if (key) {
+  //     setAccessKey(key);
+  //   }
+  // }, [location.search]);
 
   useEffect(() => {
     // const data = JSON.parse(localStorage.getItem("path")) || {};
