@@ -11,45 +11,45 @@ function Admin_Dashboard() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const verifyAdmin = async () => {
-      const token = localStorage.getItem("adminToken");
+  // useEffect(() => {
+  //   const verifyAdmin = async () => {
+  //     const token = localStorage.getItem("adminToken");
 
-      if (!token) {
-        navigate("/admin-login");
-        return;
-      }
+  //     if (!token) {
+  //       navigate("/admin-login");
+  //       return;
+  //     }
 
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/admin/verifyAdmin`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            cache: "no-store",
-          },
-        );
+  //     try {
+  //       const response = await fetch(
+  //         `${import.meta.env.VITE_API_URL}/admin/verifyAdmin`,
+  //         {
+  //           method: "GET",
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //           cache: "no-store",
+  //         },
+  //       );
 
-        console.log("Status:", response.status);
+  //       console.log("Status:", response.status);
 
-        if (!response.ok) {
-          throw new Error("Unauthorized");
-        }
+  //       if (!response.ok) {
+  //         throw new Error("Unauthorized");
+  //       }
 
-        const data = await response.json();
-        console.log("Response Data:", data);
-      } catch (error) {
-        console.log("Error caught:", error);
+  //       const data = await response.json();
+  //       console.log("Response Data:", data);
+  //     } catch (error) {
+  //       console.log("Error caught:", error);
 
-        localStorage.removeItem("adminToken");
-        navigate("/admin-login");
-      }
-    };
+  //       localStorage.removeItem("adminToken");
+  //       navigate("/admin-login");
+  //     }
+  //   };
 
-    verifyAdmin();
-  }, [navigate]);
+  //   verifyAdmin();
+  // }, [navigate]);
 
   return (
     <div className="min-h-screen bg-gray-100 lg:flex">
