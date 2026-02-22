@@ -4,7 +4,8 @@ function Sidebar({ activeMenu, setActiveMenu, isOpen, setIsOpen }) {
   const menus = [
     { id: "dashboard", label: "Dashboard" },
     { id: "payments", label: "Payments" },
-    { id: "users", label: "buyers" },
+    { id: "users", label: "Buyers" },
+    { id: "createUsers", label: "Create Users" },
     { id: "settings", label: "Settings" },
   ];
 
