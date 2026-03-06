@@ -31,49 +31,43 @@ const Level1 = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [accessKey, setAccessKey] = useState(null);
 
-  // useEffect(() => {
-  //   console.log("Image display started");
-  //   const timer = setTimeout(() => {
-  //     console.log("Image fading out after 04 seconds");
-  //     setShowImage(false);
-  //     setShowRules(true);
-  //   }, 4000);
-  //   return () => clearTimeout(timer);
-  // }, []);
-
   useEffect(() => {
     const timer = setTimeout(() => {
+      console.log("Image fading out after 04 seconds");
       setShowImage(false);
-
-      const verifyUser = async () => {
-        if (!accessKey) {
-          setShowRules(true);
-          return;
-        }
-
-        const userCheck = await checkUser();
-
-        if (!userCheck) {
-          setShowLoginModal(true);
-        } else {
-          setShowRules(true);
-        }
-      };
-
-      verifyUser();
+      setShowRules(true);
     }, 4000);
-
     return () => clearTimeout(timer);
-  }, [accessKey]);
+  }, []);
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const key = params.get("key");
+    const verifyUser = async () => {
+      const accessToken = localStorage.getItem("accessToken");
 
-    if (key) {
-      setAccessKey(key);
-    }
-  }, [location.search]);
+      if (!accessToken) {
+        navigate("/");
+        return;
+      }
+
+      const userCheck = await checkUser();
+
+      if (!userCheck) {
+        localStorage.removeItem("accessToken");
+        navigate("/");
+      }
+    };
+
+    verifyUser();
+  }, []);
+
+  // useEffect(() => {
+  //   const params = new URLSearchParams(location.search);
+  //   const key = params.get("key");
+
+  //   if (key) {
+  //     setAccessKey(key);
+  //   }
+  // }, [location.search]);
 
   useEffect(() => {
     // const data = JSON.parse(localStorage.getItem("path")) || {};

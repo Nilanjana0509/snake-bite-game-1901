@@ -38,6 +38,7 @@ import FinalResult5 from "./Results/Result5";
 import FinalResult4 from "./Results/Result4";
 import FinalResult3 from "./Results/Result3";
 import FinalResult2 from "./Results/Result2";
+import IndexPage from "./Levels/IndexPage";
 
 import Admin_Login from "./admin/Admin_Login";
 import Admin_Dashboard from "./admin/Admin_Dashboard";
@@ -280,7 +281,7 @@ function App() {
           }
         /> */}
 
-        <Route path="*" element={<Level1 />} />
+        <Route path="/level1" element={<Level1 />} />
         <Route path="/level2" element={<Level2 />} />
         <Route path="/level3" element={<Level3 />} />
         <Route path="/level4" element={<Level4 />} />
@@ -298,6 +299,7 @@ function App() {
         <Route path="/level16" element={<Level16 />} />
         <Route path="/level17" element={<Level17 />} />
         <Route path="/level18" element={<Level18 />} />
+        <Route path="*" element={<IndexPage />} />
 
         {/* Route for the final result */}
         <Route path="/result1" element={<FinalResult1 />} />

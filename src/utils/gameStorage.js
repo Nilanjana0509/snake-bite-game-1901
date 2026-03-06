@@ -10,7 +10,7 @@ function writeState(state) {
 }
 
 export function clearGameStorage() {
-  localStorage.removeItem("accessToken");
+  // localStorage.removeItem("accessToken");
   localStorage.removeItem(STORAGE_KEY);
 }
 
