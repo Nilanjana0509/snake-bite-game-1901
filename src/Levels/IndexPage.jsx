@@ -4,18 +4,29 @@ import LoginModal from "../components/Modals/LogInModal";
 function IndexPage() {
   const [showLogin, setShowLogin] = useState(false);
   const navigate = useNavigate();
-
+  const accessToken = localStorage.getItem("accessToken");
   const images = [
     { src: "/616653.png", link: "/level1" },
-    { src: "/Epidemiology.png", link: "/game2" },
-    { src: "/BMWsymbol.jpg", link: "/game3" },
-    { src: "/Family.jpg", link: "/game4" },
-    { src: "/Syndromeclinic.jpg", link: "/game5" },
+    {
+      src: "/Epidemiology.png",
+      link: "https://nilanjana0509.github.io/Epidemiological-Exercises-game2/",
+    },
+    {
+      src: "/BMWsymbol.jpg",
+      link: "https://nilanjana0509.github.io/bio-sorter-game1/",
+    },
+    {
+      src: "/Family.jpg",
+      link: "https://nilanjana0509.github.io/Family-Dietary-Requirement-Calculator-game3/",
+    },
+    {
+      src: "/Syndromeclinic.jpg",
+      link: "https://nilanjana0509.github.io/syndromic-clinic-game4/",
+    },
   ];
 
   // Show login modal after 1 second
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
     if (!accessToken) {
       const timer = setTimeout(() => {
         setShowLogin(true);
@@ -31,7 +42,7 @@ function IndexPage() {
         {images.map((item, index) => (
           <div
             key={index}
-            onClick={() => navigate(item.link)}
+            onClick={() => navigate(`${item.link}?passkey=${accessToken}`)}
             className="bg-white p-4 rounded-2xl border border-gray-200 shadow-md hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 cursor-pointer"
           >
             <img
