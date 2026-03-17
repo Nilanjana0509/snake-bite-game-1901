@@ -18,7 +18,10 @@ const SubscribeModal = ({ onSubscribe, onExit }) => {
 
         <div className="mt-6 flex gap-3">
           <button
-            onClick={onSubscribe}
+            onClick={() => {
+              window.location.href =
+                "https://nilanjana0509.github.io/Subscription-Module?gameName=snake";
+            }}
             className="flex-1 rounded-lg bg-amber-900 py-2.5 text-white transition hover:bg-amber-950"
           >
             Subscribe
