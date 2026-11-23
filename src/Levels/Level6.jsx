@@ -20,6 +20,8 @@ const Level6 = ({ setCompletedLevels }) => {
   const [selectedCards2, setSelectedCards2] = useState({});
   const [selectedCards3, setSelectedCards3] = useState({});
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showSuccessPopupForSeven, setShowSuccessPopupForSeven] =
+    useState(false);
   const [showWrongPopup, setShowWrongPopup] = useState(false);
   const [result, SetResult] = useState([]);
   const [level3Selection, setLevel3Selection] = useState("");
@@ -340,12 +342,35 @@ const Level6 = ({ setCompletedLevels }) => {
               </>
             ) : (
               <button
-                onClick={() => handleSuccessClose("/level7")}
+                onClick={() => setShowSuccessPopupForSeven(true)}
                 className="mt-4 bg-amber-950 text-white px-4 py-2 rounded-lg"
               >
                 Situation: Neurological sign
               </button>
             )}
+          </div>
+        </div>
+      )}
+
+      {showSuccessPopupForSeven && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md text-center">
+            <h2 className="text-2xl font-bold text-amber-600 mb-4">
+              Your choices are correct
+            </h2>
+            <button
+              onClick={() => handleSuccessClose("/level9")} // Navigate to Level 9
+              className="mt-4 bg-amber-950 text-white px-4 py-2 rounded-lg "
+            >
+              Situation 1: Improving after 30 min
+            </button>
+
+            <button
+              onClick={() => handleSuccessClose("/level10")} // Navigate to Level 10
+              className="mt-4 bg-amber-950 text-white px-4 py-2 rounded-lg "
+            >
+              Situation 2: Not improving after 30 min
+            </button>
           </div>
         </div>
       )}
