@@ -73,7 +73,7 @@ const Level9 = ({ setCompletedLevels }) => {
   }, []);
 
   const checkAuthentication = () => {
-    if (isPathCompleted("1-2-3-4-6-7-9-13")) {
+    if (isPathCompleted("1-2-3-4-6-9-13")) {
       toast.error("You have completed this path.");
       navigate("/level2?key=1");
     }

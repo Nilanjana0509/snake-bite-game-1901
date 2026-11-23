@@ -18,6 +18,7 @@ const Level4 = ({ setCompletedLevels }) => {
   const [deckIndex, setDeckIndex] = useState(0); // Track the current index in the deck
   const [selectedCards1, setSelectedCards1] = useState({});
   const [selectedCards2, setSelectedCards2] = useState({});
+  const [selectedCards3, setSelectedCards3] = useState({});
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showWrongPopup, setShowWrongPopup] = useState(false);
   const [result, SetResult] = useState([]);
@@ -38,6 +39,7 @@ const Level4 = ({ setCompletedLevels }) => {
     const array = [];
     array.push(selectedCards1.text);
     array.push(selectedCards2.text);
+    array.push(selectedCards3.text);
 
     // console.log(array);
     // localStorage.setItem("level4Result", JSON.stringify(array));
@@ -71,12 +73,14 @@ const Level4 = ({ setCompletedLevels }) => {
     { id: 6, text: "Transfer the patient immediately" },
     { id: 7, text: "Measure AVS according to body weight" },
     { id: 8, text: "AVS slow IV over 24 hours" },
+    { id: 9, text: "Loading Atropine IV Neostigmine IM or IV" },
   ];
 
   // Correct sequence of cards
   const correctSequence = [
     { id: 1, text: "AVS" },
     { id: 2, text: "10 vials in 1 hour" },
+    { id: 9, text: "Loading Atropine IV Neostigmine IM or IV" },
   ];
 
   // Set initial deck without shuffling (no shuffle applied)
@@ -102,11 +106,12 @@ const Level4 = ({ setCompletedLevels }) => {
   useEffect(() => {
     if (
       selectedCards1.text !== undefined &&
-      selectedCards2.text !== undefined
+      selectedCards2.text !== undefined &&
+      selectedCards3.text !== undefined
     ) {
       res();
     }
-  }, [selectedCards1, selectedCards2]);
+  }, [selectedCards1, selectedCards2, selectedCards3]);
 
   // useEffect(() => {
   //   // Retrieve the selection from Level 2 from localStorage
@@ -163,7 +168,11 @@ const Level4 = ({ setCompletedLevels }) => {
 
   const res = () => {
     // Create an array of selected cards
-    const selectedCards = [selectedCards1.text, selectedCards2.text];
+    const selectedCards = [
+      selectedCards1.text,
+      selectedCards2.text,
+      selectedCards2.text,
+    ];
 
     // Create an array of correct cards
     const correctCards = correctSequence.map((card) => card.text);
@@ -213,6 +222,7 @@ const Level4 = ({ setCompletedLevels }) => {
     // Reset the selected cards
     setSelectedCards1({});
     setSelectedCards2({});
+    setSelectedCards3({});
     setDeckIndex(0); // Restart from the first card in the deck
     // Reset the deck to initial deck
     setDeck(initialDeck);
@@ -269,6 +279,8 @@ const Level4 = ({ setCompletedLevels }) => {
                 selectCard(card, setSelectedCards1);
               } else if (!selectedCards2.text) {
                 selectCard(card, setSelectedCards2);
+              } else if (!selectedCards3.text) {
+                selectCard(card, setSelectedCards3);
               } else {
                 console.log("Both selections are filled.");
               }
@@ -289,14 +301,16 @@ const Level4 = ({ setCompletedLevels }) => {
         </div>
 
         <div className="flex flex-wrap justify-center gap-8 mt-4">
-          {[selectedCards1, selectedCards2].map((card, idx) => (
+          {[selectedCards1, selectedCards2, selectedCards3].map((card, idx) => (
             <div
               key={idx}
               className="border-2 border-blue-400 w-48 h-24 flex items-center justify-center bg-gray-100 rounded-lg shadow-md text-gray-700 transition-transform transform hover:scale-105"
               onClick={() =>
                 handleBoxClick(
                   card,
-                  [setSelectedCards1, setSelectedCards2][idx],
+                  [setSelectedCards1, setSelectedCards2, setSelectedCards3][
+                    idx
+                  ],
                 )
               }
             >
